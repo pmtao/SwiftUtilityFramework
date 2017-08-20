@@ -18,9 +18,9 @@ public struct SUF_ShuntingYard {
     /// - Parameter exp: 待转换的表达式
     public static func ShuntingYardTransform(exp: String) -> Queue<String> {
         /// 先将表达式解析为队列（已进行内部运算符号系统转换）
-        let expQueue = SUF_MathAnalyze.analyzeMathExpression(expression: exp)
-        let symbolStack = Stack<String>() // 符号栈
-        let resultQueue = Queue<String>() //输出队列
+        var expQueue = SUF_MathAnalyze.analyzeMathExpression(expression: exp)
+        var symbolStack = Stack<String>() // 符号栈
+        var resultQueue = Queue<String>() //输出队列
         
         // 循环处理表达式队列
         while !((expQueue?.isEmpty)!) {
@@ -277,7 +277,7 @@ public struct SUF_MathAnalyze {
             return nil
         }
         
-        let output = Queue<String>() // 输出队列
+        var output = Queue<String>() // 输出队列
         var tempElement = "" // 临时队列元素
         
         // 逐个解析字符并放入到队列中
@@ -306,3 +306,113 @@ public struct SUF_MathAnalyze {
     }
     
 }
+
+/// 栈结构，可放入任意类型对象，后进栈的永远在栈首，后进先出，通过数组实现。
+public struct Stack<Element> {
+    
+    /// 是否为空
+    public var isEmpty: Bool { return stack.isEmpty }
+    /// 栈的大小
+    public var size: Int { return stack.count }
+    /// 栈顶元素
+    public var peek: Element? {
+        return stack.last
+    }
+    
+    private var stack: [Element]
+    
+    /// 构造函数
+    public init() {
+        stack = [Element] ()
+    }
+    
+    /// 加入一个新元素
+    public mutating func push(_ obj: Element) {
+        stack.append(obj)
+    }
+    
+    /// 推出栈顶元素
+    public mutating func pop() -> Element? {
+        if isEmpty {
+            return nil
+        } else {
+            return stack.removeLast()
+        }
+    }
+    
+    /// 如果栈中的元素是字符串，则将栈中的元素打印输出至一个完整字符串
+    ///
+    /// - Returns: 输出字符串，如果元素不是字符串类型，则为 nil。
+    public static func printStack(stack: Stack<String>) -> String? {
+        var stackMutatable = stack
+        var unit = stackMutatable.pop() // 推出元素
+        var printString = "Stack top from here:"
+        
+        if unit == nil {
+            return nil
+        } else {
+            while unit != nil {
+                printString += ("  " + unit!)
+                unit = stackMutatable.pop()
+            }
+        }
+        return printString
+    }
+}
+
+
+/// 队列结构，可放入任意类型对象，先进入队列的永远在队首，先进先出，通过数组实现。
+public struct Queue<Element> {
+    
+    /// 是否为空
+    public var isEmpty: Bool { return queue.isEmpty }
+    /// 队列大小
+    public var size: Int { return queue.count }
+    /// 队列首元素
+    public var peek: Element? {
+        return queue.first
+    }
+    
+    private var queue: [Element]
+    
+    /// 构造函数
+    public init() {
+        queue = [Element]()
+    }
+    
+    /// 加入新元素
+    public mutating func enqueue(_ obj: Element) {
+        queue.append(obj)
+    }
+    
+    /// 推出队列元素
+    public mutating func dequeue() -> Element? {
+        if isEmpty {
+            return nil
+        } else {
+            return queue.removeFirst()
+        }
+    }
+    
+    
+    /// 如果队列中的元素是字符串，则将队列中的元素打印输出至一个完整字符串
+    ///
+    /// - Returns: 输出字符串，如果元素不是字符串类型，则为 nil。
+    public static func printQueue(queue: Queue<String>) -> String? {
+        var queueMutated = queue
+        var unit = queueMutated.dequeue() // 推出元素
+        var printString = "Queue start from here:"
+        
+        if unit == nil {
+            return nil
+        } else {
+            while unit != nil {
+                printString += ("  " + unit!)
+                unit = queueMutated.dequeue()
+            }
+        }
+        return printString
+    }
+    
+}
+

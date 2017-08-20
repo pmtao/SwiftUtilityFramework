@@ -32,7 +32,7 @@ class SwiftUtilityFrameworkTests: XCTestCase {
         SUF_ShuntingYard_test()
 
 
-        // Stack_test()
+//         Stack_test()
         
         
     }
@@ -42,7 +42,7 @@ class SwiftUtilityFrameworkTests: XCTestCase {
         let exp = SUF_MathAnalyze.mathSymbolSystemTransition(string)
         let valid = try! SUF_MathAnalyze.isMathExpressionValid(exp: exp)
         XCTAssertEqual(valid, "", "测试不通过")
-        let queue = SUF_MathAnalyze.analyzeMathExpression(expression: string)
+        var queue = SUF_MathAnalyze.analyzeMathExpression(expression: string)
         _ = queue?.dequeue()
         XCTAssertEqual((queue?.peek)! , "\u{4E00}", "测试不通过")
     }
@@ -56,7 +56,7 @@ class SwiftUtilityFrameworkTests: XCTestCase {
     }
     
     func Stack_test() {
-        let stack = Stack<String>()
+        var stack = Stack<String>()
         stack.push("1")
         stack.push("2")
         stack.push("3")

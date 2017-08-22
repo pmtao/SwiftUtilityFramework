@@ -29,11 +29,11 @@ class SwiftUtilityFrameworkTests: XCTestCase {
         
         // SUF_MathAnalyze_test ()
         
-        SUF_ShuntingYard_test()
+//        SUF_ShuntingYard_test()
 
 
-//         Stack_test()
-        
+        Stack_test()
+        Queue_test()
         
     }
     
@@ -56,14 +56,52 @@ class SwiftUtilityFrameworkTests: XCTestCase {
     }
     
     func Stack_test() {
-        var stack = Stack<String>()
-        stack.push("1")
-        stack.push("2")
-        stack.push("3")
-        let printString = Stack<String>.printStack(stack: stack)
-        XCTAssertEqual(printString!, "Stack top from here:  3  2  1", "测试不通过")
+        func filter(obj: Int) -> Bool {
+            if obj % 2 == 0 {
+                return true
+            } else {
+                return false
+            }
+        }
+        
+        var stack = Stack<Int>(sizeLimit: 4, filter: filter)
+        stack.push(1)
+        stack.push(2)
+        stack.push(3)
+        stack.push(4)
+        stack.push(5)
+        stack.push(6)
+        stack.push(7)
+        stack.push(8)
+        stack.push(9)
+        stack.push(10)
+        print("Is stack full: \(stack.isFull)")
+        print("Top element: \((stack.peek)!)")
     }
     
+    func Queue_test() {
+        func filter(obj: Int) -> Bool {
+            if obj % 2 == 0 {
+                return true
+            } else {
+                return false
+            }
+        }
+        
+        var queue = Queue<Int>(sizeLimit: 4, filter: filter)
+        queue.enqueue(1)
+        queue.enqueue(2)
+        queue.enqueue(3)
+        queue.enqueue(4)
+        queue.enqueue(5)
+        queue.enqueue(6)
+        queue.enqueue(7)
+        queue.enqueue(8)
+        queue.enqueue(9)
+        queue.enqueue(10)
+        print("Is queue full: \(queue.isFull)")
+        print("First element: \((queue.peek)!)")
+    }
     
 //    func testPerformanceExample() {
 //        // This is an example of a performance test case.

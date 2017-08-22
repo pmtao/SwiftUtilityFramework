@@ -312,13 +312,27 @@ public struct Stack<Element> {
     
     /// 是否为空
     public var isEmpty: Bool { return stack.isEmpty }
+    // 是否装满了
+    public var isFull: Bool {
+        if self.sizeLimit <= 0 {
+            return false
+        } else {
+            return self.stack.count >= self.sizeLimit
+        }
+    }
+    
     /// 栈的大小
     public var size: Int { return stack.count }
     /// 栈顶元素
     public var peek: Element? {
         return stack.last
     }
+    // 栈上限
+    public var sizeLimit: Int = 0
+    /// 入栈操作的限制方法，方法返回 true 时才能入栈。
+    public var filter: ((Element) -> Bool)?
     
+    // 栈实例
     private var stack: [Element]
     
     /// 构造函数
@@ -326,9 +340,31 @@ public struct Stack<Element> {
         stack = [Element] ()
     }
     
-    /// 加入一个新元素
+    /// 加入限制条件的初始化方法
+    public init(sizeLimit: Int = 0, filter: ((Element) -> Bool)? = nil) {
+        self.sizeLimit = sizeLimit
+        self.filter = filter
+        stack = [Element] ()
+    }
+    
+    /// 向栈内压入一个新元素，压入前需检查栈是否有大小限制、元素过滤条件限制，条件都满足才允许入栈。
+    ///
+    /// - Parameter obj: 待压栈的元素
     public mutating func push(_ obj: Element) {
-        stack.append(obj)
+        if !isFull {
+            if filter != nil {
+                let filterResult = filter!(obj)
+                if filterResult { // 符合过滤条件
+                    stack.append(obj)
+                } else {
+                    print("For this element can't meet the filter, it can't be pushing into the stack: \(String(describing: obj)).")
+                }
+            } else {
+                stack.append(obj)
+            }
+        } else {
+            print("Stack is full, this element can't be pushing into the stack: \(String(describing: obj)).")
+        }
     }
     
     /// 推出栈顶元素
@@ -366,13 +402,27 @@ public struct Queue<Element> {
     
     /// 是否为空
     public var isEmpty: Bool { return queue.isEmpty }
+    // 队列是否满了
+    public var isFull: Bool {
+        if self.sizeLimit <= 0 {
+            return false
+        } else {
+            return self.queue.count >= self.sizeLimit
+        }
+    }
+    
     /// 队列大小
     public var size: Int { return queue.count }
     /// 队列首元素
     public var peek: Element? {
         return queue.first
     }
+    // 栈上限
+    public var sizeLimit: Int = 0
+    /// 入栈操作的限制方法，方法返回 true 时才能入栈。
+    public var filter: ((Element) -> Bool)?
     
+    // 队列实例
     private var queue: [Element]
     
     /// 构造函数
@@ -380,9 +430,31 @@ public struct Queue<Element> {
         queue = [Element]()
     }
     
-    /// 加入新元素
+    /// 加入限制条件的初始化方法
+    public init(sizeLimit: Int = 0, filter: ((Element) -> Bool)? = nil) {
+        self.sizeLimit = sizeLimit
+        self.filter = filter
+        queue = [Element] ()
+    }
+    
+    /// 向队列中添加一个新元素，添加前需检查队列是否有大小限制、元素过滤条件限制，条件都满足才允许入队列。
+    ///
+    /// - Parameter obj: 待入队列的元素
     public mutating func enqueue(_ obj: Element) {
-        queue.append(obj)
+        if !isFull {
+            if filter != nil {
+                let filterResult = filter!(obj)
+                if filterResult { // 符合过滤条件
+                    queue.append(obj)
+                } else {
+                    print("For this element can't meet the filter, it can't  join the queue: \(String(describing: obj)).")
+                }
+            } else {
+                queue.append(obj)
+            }
+        } else {
+            print("Queue is full, this element can't join the queue: \(String(describing: obj)).")
+        }
     }
     
     /// 推出队列元素

@@ -14,8 +14,8 @@ public struct SUF_ShuntingYard {
     
     
     /// 调度场转换算法：将中缀形式的数学表达式转换为后缀表达式（逆波兰表示法 RPN）
-    ///
-    /// - Parameter exp: 待转换的表达式
+    /// 算法参考链接： https://zh.wikipedia.org/wiki/%E8%B0%83%E5%BA%A6%E5%9C%BA%E7%AE%97%E6%B3%95
+    /// - Parameter exp: 待转换的数学表达式，如："12 + 34 * (56 * (78 + 90) + 110) * (120  + 130) + sin(90)"
     public static func ShuntingYardTransform(exp: String) -> Queue<String> {
         /// 先将表达式解析为队列（已进行内部运算符号系统转换）
         var expQueue = SUF_MathAnalyze.analyzeMathExpression(expression: exp)
@@ -34,12 +34,12 @@ public struct SUF_ShuntingYard {
             case .number:
                 resultQueue.enqueue(expUnit)
             case .plus, .minus, .multiply, .divide,.square, .sin, .cos:
-//                如果队列中取出的元素表示一个操作符，记做o1，那么：
-//                只要存在另一个记为o2的操作符（注意如果是括号，则无需比较直接压栈）位于栈的顶端，并且
-//                        如果o1是左结合性的并且它的运算符优先级要小于或者等于o2的优先级，或者
-//                        如果o1是右结合性的并且它的运算符优先级比o2的要低，那么
-//                    将o2从栈的顶端弹出并且放入输出队列中（循环直至以上条件不满足为止）；
-//                然后，将o1压入栈的顶端。
+      /* 如果队列中取出的元素表示一个操作符，记做o1，那么：
+                只要存在另一个记为o2的操作符（注意如果是括号，则无需比较直接压栈）位于栈的顶端，并且
+                        如果o1是左结合性的并且它的运算符优先级要小于或者等于o2的优先级，或者
+                        如果o1是右结合性的并且它的运算符优先级比o2的要低，那么
+                    将o2从栈的顶端弹出并且放入输出队列中（循环直至以上条件不满足为止）；
+                然后，将o1压入栈的顶端。*/
                 
                 var peek = symbolStack.peek
                 // 只要符号栈顶有操作符，就要与队列中取出的操作符进行比较并操作。
@@ -419,6 +419,8 @@ public struct Queue<Element> {
     }
     // 栈上限
     public var sizeLimit: Int = 0
+    /// 标志栈达到上限时，是否允许推出队首元素，再加入新元素。
+    public var isDequeueOnFull: Bool = false
     /// 入栈操作的限制方法，方法返回 true 时才能入栈。
     public var filter: ((Element) -> Bool)?
     
@@ -431,8 +433,13 @@ public struct Queue<Element> {
     }
     
     /// 加入限制条件的初始化方法
-    public init(sizeLimit: Int = 0, filter: ((Element) -> Bool)? = nil) {
+    public init(
+        sizeLimit: Int = 0,
+        isDequeueOnFull: Bool = false,
+        filter: ((Element) -> Bool)? = nil)
+    {
         self.sizeLimit = sizeLimit
+        self.isDequeueOnFull = isDequeueOnFull
         self.filter = filter
         queue = [Element] ()
     }
@@ -441,6 +448,7 @@ public struct Queue<Element> {
     ///
     /// - Parameter obj: 待入队列的元素
     public mutating func enqueue(_ obj: Element) {
+        // 队列未满的情况。如果有过滤条件，先判断；没有则直接加入。
         if !isFull {
             if filter != nil {
                 let filterResult = filter!(obj)
@@ -452,8 +460,35 @@ public struct Queue<Element> {
             } else {
                 queue.append(obj)
             }
-        } else {
-            print("Queue is full, this element can't join the queue: \(String(describing: obj)).")
+        }
+            
+        // 队列已满
+        else {
+            // 判断标志：队列已满时是否可以放入新元素
+            if isDequeueOnFull {
+                // 判断过滤条件
+                if filter != nil {
+                    let filterResult = filter!(obj)
+                    if filterResult {
+                        // 符合过滤条件
+                        if !isEmpty {
+                            queue.removeFirst()
+                            queue.append(obj)
+                        }
+                    } else {
+                        print("For this element can't meet the filter, it can't  join the queue: \(String(describing: obj)).")
+                    }
+                }
+                // 无过滤条件
+                else {
+                    if !isEmpty {
+                        queue.removeFirst()
+                        queue.append(obj)
+                    }
+                }
+            } else {
+                print("Queue is full, this element can't join the queue: \(String(describing: obj)).")
+            }
         }
     }
     

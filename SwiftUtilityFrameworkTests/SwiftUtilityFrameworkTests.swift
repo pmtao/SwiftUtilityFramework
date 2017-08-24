@@ -32,7 +32,7 @@ class SwiftUtilityFrameworkTests: XCTestCase {
 //        SUF_ShuntingYard_test()
 
 
-        Stack_test()
+//        Stack_test()
         Queue_test()
         
     }
@@ -88,7 +88,7 @@ class SwiftUtilityFrameworkTests: XCTestCase {
             }
         }
         
-        var queue = Queue<Int>(sizeLimit: 4, filter: filter)
+        var queue = Queue<Int>(sizeLimit: 4, isDequeueOnFull: true, filter: filter)
         queue.enqueue(1)
         queue.enqueue(2)
         queue.enqueue(3)

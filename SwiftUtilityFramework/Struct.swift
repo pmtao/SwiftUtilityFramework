@@ -125,29 +125,28 @@ public struct SUF_ShuntingYard {
     
 }
 
+/// 数学表达式中各种符号类型
+public enum MathSymbolType: String {
+    case number
+    case plus
+    case minus
+    case multiply
+    case divide
+    case square
+    case leftParenthesis
+    case rightParenthesis
+    case sin
+    case cos
+    case undefined
+}
+
 /// 包含各类数学符号解析转换的结构体
 public struct SUF_MathAnalyze {
-    /// 数学表达式中各种符号类型
-    public enum mathSymbolType: String {
-        case number
-        case plus
-        case minus
-        case multiply
-        case divide
-        case square
-        case leftParenthesis
-        case rightParenthesis
-        case sin
-        case cos
-        case undefined
-    }
-    
-    
     /// 数学表达式无效的错误类型
     ///
     /// - undefinedSymbol: 存在未定义的符号
     /// - unmatchedParenthesis: 括号数量不匹配
-    public enum invalidType: Error {
+    public enum InvalidType: Error {
         case undefinedSymbol
         case unmatchedParenthesis
     }
@@ -168,14 +167,14 @@ public struct SUF_MathAnalyze {
     
     /// 内置数学运算符号系统相关属性
     static let internalSymbols: [String: [String: Any]] = [
-        "\u{4E00}": ["literal":"+", "level": 1, "operandCount": 2, "association": "left", "type": mathSymbolType.plus],
-        "\u{4E01}": ["literal":"-", "level": 1, "operandCount": 2, "association": "left", "type": mathSymbolType.minus],
-        "\u{4E02}": ["literal":"×", "level": 2, "operandCount": 2, "association": "left", "type": mathSymbolType.multiply],
-        "\u{4E03}": ["literal":"÷", "level": 2, "operandCount": 2, "association": "left", "type": mathSymbolType.divide],
-        "(":        ["literal":"(", "level": 4, "operandCount": 0, "association": "right", "type": mathSymbolType.leftParenthesis],
-        ")":        ["literal":")", "level": 4, "operandCount": 0, "association": "left", "type": mathSymbolType.rightParenthesis],
-        "\u{4E04}": ["literal":"sin", "level": 3, "operandCount": 1, "association": "left", "type": mathSymbolType.sin],
-        "\u{4E05}": ["literal":"cos", "level": 3, "operandCount": 1, "association": "left", "type": mathSymbolType.cos]
+        "\u{4E00}": ["literal":"+", "level": 1, "operandCount": 2, "association": "left", "type": MathSymbolType.plus],
+        "\u{4E01}": ["literal":"-", "level": 1, "operandCount": 2, "association": "left", "type": MathSymbolType.minus],
+        "\u{4E02}": ["literal":"×", "level": 2, "operandCount": 2, "association": "left", "type": MathSymbolType.multiply],
+        "\u{4E03}": ["literal":"÷", "level": 2, "operandCount": 2, "association": "left", "type": MathSymbolType.divide],
+        "(":        ["literal":"(", "level": 4, "operandCount": 0, "association": "right", "type": MathSymbolType.leftParenthesis],
+        ")":        ["literal":")", "level": 4, "operandCount": 0, "association": "left", "type": MathSymbolType.rightParenthesis],
+        "\u{4E04}": ["literal":"sin", "level": 3, "operandCount": 1, "association": "left", "type": MathSymbolType.sin],
+        "\u{4E05}": ["literal":"cos", "level": 3, "operandCount": 1, "association": "left", "type": MathSymbolType.cos]
     ]
     
     public init() {
@@ -212,12 +211,12 @@ public struct SUF_MathAnalyze {
     ///
     /// - Parameter symbol: 经过 mathSymbolSystemTransition 转换的字符
     /// - Returns: 符号类型
-    public static func checkSymbolType(symbol: Character) -> mathSymbolType {
-        var type: mathSymbolType = .undefined
+    public static func checkSymbolType(symbol: Character) -> MathSymbolType {
+        var type: MathSymbolType = .undefined
         
         // 从 [内置数学运算符号系统] 进行查找
         if SUF_MathAnalyze.internalSymbols[String(symbol)] != nil {
-            type = (SUF_MathAnalyze.internalSymbols[String(symbol)])!["type"] as! mathSymbolType
+            type = (SUF_MathAnalyze.internalSymbols[String(symbol)])!["type"] as! MathSymbolType
         } else if [".","0","1","2","3","4","5","6","7","8","9"].contains(symbol) {
             type = .number
         }
@@ -236,13 +235,13 @@ public struct SUF_MathAnalyze {
             let type = checkSymbolType(symbol: exp[index])
             if type == .undefined {
                 undefinedStrings.append(exp[index])
-                throw invalidType.undefinedSymbol
+                throw InvalidType.undefinedSymbol
             }
         }
         
         if exp.replacingOccurrences(of: "(", with: "").characters.count !=
             exp.replacingOccurrences(of: ")", with: "").characters.count {
-            throw invalidType.unmatchedParenthesis
+            throw InvalidType.unmatchedParenthesis
         }
         
         

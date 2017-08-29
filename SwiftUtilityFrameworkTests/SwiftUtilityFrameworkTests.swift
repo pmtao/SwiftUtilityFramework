@@ -29,11 +29,11 @@ class SwiftUtilityFrameworkTests: XCTestCase {
         
         // SUF_MathAnalyze_test ()
         
-//        SUF_ShuntingYard_test()
+        SUF_ShuntingYard_test()
 
 
 //        Stack_test()
-        Queue_test()
+//        Queue_test()
         
     }
     
@@ -50,9 +50,8 @@ class SwiftUtilityFrameworkTests: XCTestCase {
     func SUF_ShuntingYard_test() {
         let string = "12 + 34 * (56 * (78 + 90) + 110) * (120  + 130) + sin(90)"
         let resultQueue = SUF_ShuntingYard.ShuntingYardTransform(exp: string)
-        var printString = Queue<String>.printQueue(queue: resultQueue)
-        printString = SUF_MathAnalyze.mathSymbolToLiteral(printString!)
-        print("\(printString!)")
+        let result = SUF_RPNEvaluate(RPNQueue: resultQueue)
+        print("result:\(result!)")
     }
     
     func Stack_test() {

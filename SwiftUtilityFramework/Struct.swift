@@ -16,11 +16,12 @@ public struct SUF_ShuntingYard {
     /// 调度场转换算法：将中缀形式的数学表达式转换为后缀表达式（逆波兰表示法 RPN）
     /// 算法参考链接： https://zh.wikipedia.org/wiki/%E8%B0%83%E5%BA%A6%E5%9C%BA%E7%AE%97%E6%B3%95
     /// - Parameter exp: 待转换的数学表达式，如："12 + 34 * (56 * (78 + 90) + 110) * (120  + 130) + sin(90)"
-    public static func ShuntingYardTransform(exp: String) -> Queue<String> {
+    public static func ShuntingYardTransform(exp: String) -> Queue<[String: Any]> {
         /// 先将表达式解析为队列（已进行内部运算符号系统转换）
         var expQueue = SUF_MathAnalyze.analyzeMathExpression(expression: exp)
         var symbolStack = Stack<String>() // 符号栈
-        var resultQueue = Queue<String>() //输出队列
+        var resultQueue = Queue<String>() // 输出队列
+        var detailedResultQueue = Queue<[String: Any]>() // 带类型标识的输出队列
         
         // 循环处理表达式队列
         while !((expQueue?.isEmpty)!) {
@@ -33,13 +34,14 @@ public struct SUF_ShuntingYard {
             switch type {
             case .number:
                 resultQueue.enqueue(expUnit)
+                detailedResultQueue.enqueue(["type": SUF_RPNSymbolType.number, "value": SUF_stringToNumber(with: expUnit)!])
             case .plus, .minus, .multiply, .divide,.square, .sin, .cos:
-      /* 如果队列中取出的元素表示一个操作符，记做o1，那么：
-                只要存在另一个记为o2的操作符（注意如果是括号，则无需比较直接压栈）位于栈的顶端，并且
-                        如果o1是左结合性的并且它的运算符优先级要小于或者等于o2的优先级，或者
-                        如果o1是右结合性的并且它的运算符优先级比o2的要低，那么
-                    将o2从栈的顶端弹出并且放入输出队列中（循环直至以上条件不满足为止）；
-                然后，将o1压入栈的顶端。*/
+                  /*  如果队列中取出的元素表示一个操作符，记做o1，那么：
+                                        只要存在另一个记为o2的操作符（注意如果是括号，则无需比较直接压栈）位于栈的顶端，并且
+                                                如果o1是左结合性的并且它的运算符优先级要小于或者等于o2的优先级，或者
+                                                如果o1是右结合性的并且它的运算符优先级比o2的要低，那么
+                                            将o2从栈的顶端弹出并且放入输出队列中（循环直至以上条件不满足为止）；
+                                        然后，将o1压入栈的顶端。*/
                 
                 var peek = symbolStack.peek
                 // 只要符号栈顶有操作符，就要与队列中取出的操作符进行比较并操作。
@@ -57,9 +59,13 @@ public struct SUF_ShuntingYard {
                     let association = (SUF_MathAnalyze.internalSymbols[expUnit])!["association"] as! String
                     
                     if association == "left" && unitLevel <= stacklevel {
-                        resultQueue.enqueue((symbolStack.pop())!)
+                        let symbol = (symbolStack.pop())!
+                        resultQueue.enqueue(symbol)
+                        detailedResultQueue.enqueue(["type": SUF_RPNSymbolType.mathSymbol, "value": symbol])
                     } else if association == "right" && unitLevel < stacklevel {
-                        resultQueue.enqueue((symbolStack.pop())!)
+                        let symbol = (symbolStack.pop())!
+                        resultQueue.enqueue(symbol)
+                        detailedResultQueue.enqueue(["type": SUF_RPNSymbolType.mathSymbol, "value": symbol])
                     } else {
                         symbolStack.push(expUnit)
                         break //操作符压栈后该循环就结束了
@@ -84,7 +90,9 @@ public struct SUF_ShuntingYard {
                                     如果在找到一个左括号之前栈就已经弹出了所有元素，那么就表示在表达式中存在不匹配的括号。*/
                 var peek = symbolStack.peek
                 while peek != nil && (peek!) != "("  {
-                    resultQueue.enqueue((symbolStack.pop())!)
+                    let symbol = (symbolStack.pop())!
+                    resultQueue.enqueue(symbol)
+                    detailedResultQueue.enqueue(["type": SUF_RPNSymbolType.mathSymbol, "value": symbol])
                     peek = symbolStack.peek
                 }
                 
@@ -114,19 +122,92 @@ public struct SUF_ShuntingYard {
                 case .leftParenthesis, .rightParenthesis:
                     print("表达式中存在不匹配的括号数量")
                 default:
-                    resultQueue.enqueue((symbolStack.pop())!)
+                    let symbol = (symbolStack.pop())!
+                    resultQueue.enqueue(symbol)
+                    detailedResultQueue.enqueue(["type": SUF_RPNSymbolType.mathSymbol, "value": symbol])
                 }
                 peek = symbolStack.peek
             }
         }
         
-        return resultQueue
+        return detailedResultQueue
     } // 方法结束
     
 }
 
-/// 数学表达式中各种符号类型
-public enum MathSymbolType: String {
+
+/// 计算逆波兰表达式
+///
+/// - Parameter RPNQueue: 将操作数和操作符分解后的逆波兰表达式队列。
+/// 操作符需经过 mathSymbolSystemTransition() 方法转换
+/// - Returns: 计算结果
+public func SUF_RPNEvaluate(RPNQueue: Queue<[String: Any]>) -> Double? {
+    var queue = RPNQueue // 将操作数和操作符分解后的逆波兰表达式队列
+    var operandStack = Stack<Double>() // 要计算的操作数栈
+    var calcResult: Double?
+    
+    while !(queue.isEmpty) {
+        let element = (queue.dequeue())!
+        let elementType = element["type"] as! SUF_RPNSymbolType
+        let elementValue = element["value"]
+        
+        if elementType == SUF_RPNSymbolType.number {
+            operandStack.push(elementValue as! Double)
+        }
+        
+        if elementType == SUF_RPNSymbolType.mathSymbol {
+            let operandCount = (SUF_MathAnalyze.internalSymbols[
+                elementValue as! String]?["operandCount"])! as! Int
+            if operandStack.size < operandCount {
+                print("计算符号需要的操作数个数不足，" +
+                    "计算符号是：\(elementValue as! String)，" +
+                    "需要的操作数个数是:\(operandCount)")
+                return nil
+            } else {
+                // 取操作数
+                if operandCount == 2 {
+                    let operandLeft = (operandStack.pop())!
+                    let operandRight = (operandStack.pop())!
+                    // 进行计算
+                    let result = SUF_mathCalculate.calc(
+                        symbol: elementValue as! String,
+                        operandLeft: operandLeft,
+                        operandRight: operandRight)
+                    operandStack.push(result)
+                    
+                }
+                
+                if operandCount == 1 {
+                    let operand = (operandStack.pop())!
+                    // 进行计算
+                    let result = SUF_mathCalculate.calc(
+                        symbol: elementValue as! String,
+                        operand: operand)
+                    operandStack.push(result)
+                    
+                }
+            }
+        }
+    }
+    
+    
+    if operandStack.size == 1 {
+        calcResult = (operandStack.pop())!
+    } else {
+        print("操作数多了")
+    }
+    
+    return calcResult
+}
+
+/// 逆波兰表达式中的符号类型
+public enum SUF_RPNSymbolType: Int {
+    case number = 0
+    case mathSymbol = 1
+}
+
+/// 常规数学表达式中各种符号类型
+public enum SUF_MathSymbolType: String {
     case number
     case plus
     case minus
@@ -167,14 +248,14 @@ public struct SUF_MathAnalyze {
     
     /// 内置数学运算符号系统相关属性
     static let internalSymbols: [String: [String: Any]] = [
-        "\u{4E00}": ["literal":"+", "level": 1, "operandCount": 2, "association": "left", "type": MathSymbolType.plus],
-        "\u{4E01}": ["literal":"-", "level": 1, "operandCount": 2, "association": "left", "type": MathSymbolType.minus],
-        "\u{4E02}": ["literal":"×", "level": 2, "operandCount": 2, "association": "left", "type": MathSymbolType.multiply],
-        "\u{4E03}": ["literal":"÷", "level": 2, "operandCount": 2, "association": "left", "type": MathSymbolType.divide],
-        "(":        ["literal":"(", "level": 4, "operandCount": 0, "association": "right", "type": MathSymbolType.leftParenthesis],
-        ")":        ["literal":")", "level": 4, "operandCount": 0, "association": "left", "type": MathSymbolType.rightParenthesis],
-        "\u{4E04}": ["literal":"sin", "level": 3, "operandCount": 1, "association": "left", "type": MathSymbolType.sin],
-        "\u{4E05}": ["literal":"cos", "level": 3, "operandCount": 1, "association": "left", "type": MathSymbolType.cos]
+        "\u{4E00}": ["literal":"+", "level": 1, "operandCount": 2, "association": "left", "type": SUF_MathSymbolType.plus],
+        "\u{4E01}": ["literal":"-", "level": 1, "operandCount": 2, "association": "left", "type": SUF_MathSymbolType.minus],
+        "\u{4E02}": ["literal":"×", "level": 2, "operandCount": 2, "association": "left", "type": SUF_MathSymbolType.multiply],
+        "\u{4E03}": ["literal":"÷", "level": 2, "operandCount": 2, "association": "left", "type": SUF_MathSymbolType.divide],
+        "(":        ["literal":"(", "level": 4, "operandCount": 0, "association": "right", "type": SUF_MathSymbolType.leftParenthesis],
+        ")":        ["literal":")", "level": 4, "operandCount": 0, "association": "left", "type": SUF_MathSymbolType.rightParenthesis],
+        "\u{4E04}": ["literal":"sin", "level": 3, "operandCount": 1, "association": "left", "type": SUF_MathSymbolType.sin],
+        "\u{4E05}": ["literal":"cos", "level": 3, "operandCount": 1, "association": "left", "type": SUF_MathSymbolType.cos]
     ]
     
     public init() {
@@ -211,12 +292,12 @@ public struct SUF_MathAnalyze {
     ///
     /// - Parameter symbol: 经过 mathSymbolSystemTransition 转换的字符
     /// - Returns: 符号类型
-    public static func checkSymbolType(symbol: Character) -> MathSymbolType {
-        var type: MathSymbolType = .undefined
+    public static func checkSymbolType(symbol: Character) -> SUF_MathSymbolType {
+        var type: SUF_MathSymbolType = .undefined
         
         // 从 [内置数学运算符号系统] 进行查找
         if SUF_MathAnalyze.internalSymbols[String(symbol)] != nil {
-            type = (SUF_MathAnalyze.internalSymbols[String(symbol)])!["type"] as! MathSymbolType
+            type = (SUF_MathAnalyze.internalSymbols[String(symbol)])!["type"] as! SUF_MathSymbolType
         } else if [".","0","1","2","3","4","5","6","7","8","9"].contains(symbol) {
             type = .number
         }
@@ -305,6 +386,73 @@ public struct SUF_MathAnalyze {
     }
     
 }
+
+
+/// 封装常用的数学计算公式
+public struct SUF_mathCalculate {
+    /// 双操作数计算
+    static public func calc(symbol: String, operandLeft: Double, operandRight: Double) -> Double {
+        var result: Double = 0
+        
+        switch symbol {
+        case "\u{4E00}":
+            result = plus(operandLeft: operandLeft, operandRight: operandRight)
+        case "\u{4E01}":
+            result = minus(operandLeft: operandLeft, operandRight: operandRight)
+        case "\u{4E02}":
+            result = multiply(operandLeft: operandLeft, operandRight: operandRight)
+        case "\u{4E03}":
+            result = divide(operandLeft: operandLeft, operandRight: operandRight)
+        default:
+            break
+        }
+        
+        return result
+    }
+    
+    /// 单操作数计算
+    static public func calc(symbol: String, operand: Double) -> Double {
+        var result: Double = 0
+        
+        switch symbol {
+        case "\u{4E04}":
+            result = sin(operand: operand)
+        default:
+            break
+        }
+        
+        return result
+    }
+    
+    
+    
+    // 加法
+    static func plus(operandLeft: Double, operandRight: Double) -> Double {
+        return operandLeft + operandRight
+    }
+    
+    // 减法
+    static func minus(operandLeft: Double, operandRight: Double) -> Double {
+        return operandLeft - operandRight
+    }
+    
+    // 乘法
+    static func multiply(operandLeft: Double, operandRight: Double) -> Double {
+        return operandLeft * operandRight
+    }
+    
+    // 除法
+    static func divide(operandLeft: Double, operandRight: Double) -> Double {
+        return operandLeft / operandRight
+    }
+    
+    // 正弦计算
+    static func sin(operand: Double) -> Double {
+        let radian = CGFloat(Double.pi / 180 * operand) // 由度转为弧度
+        return Double(CoreGraphics.sin(radian))
+    }
+}
+
 
 /// 栈结构，可放入任意类型对象，后进栈的永远在栈首，后进先出，通过数组实现。
 public struct Stack<Element> {

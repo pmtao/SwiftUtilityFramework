@@ -16,8 +16,13 @@ public struct SUF_ShuntingYard {
     /// 调度场转换算法：将中缀形式的数学表达式转换为后缀表达式（逆波兰表示法 RPN）
     /// 算法参考链接： https://zh.wikipedia.org/wiki/%E8%B0%83%E5%BA%A6%E5%9C%BA%E7%AE%97%E6%B3%95
     /// - Parameter exp: 待转换的数学表达式，如："12 + 34 * (56 * (78 + 90) + 110) * (120  + 130) + sin(90)"
-    public static func ShuntingYardTransform(exp: String) -> Queue<[String: Any]> {
-        /// 先将表达式解析为队列（已进行内部运算符号系统转换）
+    public static func ShuntingYardTransform(exp: String) -> Queue<[String: Any]>? {
+        // 先检查括号是否匹配
+        let check = SUF_MathAnalyze.parenthesisCheck(expression: exp)
+        if !check {
+            return nil
+        }
+        /// 将表达式解析为队列（已进行内部运算符号系统转换）
         var expQueue = SUF_MathAnalyze.analyzeMathExpression(expression: exp)
         var symbolStack = Stack<String>() // 符号栈
         var resultQueue = Queue<String>() // 输出队列
@@ -100,7 +105,7 @@ public struct SUF_ShuntingYard {
                     let _ = symbolStack.pop()
                     peek = symbolStack.peek 
                     if peek == nil {
-                        print("表达式中存在不匹配的括号数量")
+                        print("表达式中可能存在不匹配的括号数量")
                         break // 退出 switch
                     }
                 }
@@ -120,7 +125,7 @@ public struct SUF_ShuntingYard {
                 let type = SUF_MathAnalyze.checkSymbolType(symbol: Character(peek! ))
                 switch type {
                 case .leftParenthesis, .rightParenthesis:
-                    print("表达式中存在不匹配的括号数量")
+                    print("表达式中可能存在不匹配的括号数量")
                 default:
                     let symbol = (symbolStack.pop())!
                     resultQueue.enqueue(symbol)
@@ -137,7 +142,7 @@ public struct SUF_ShuntingYard {
 
 
 /// 计算逆波兰表达式
-///
+/// 算法参考链接：https://zh.wikipedia.org/wiki/%E9%80%86%E6%B3%A2%E5%85%B0%E8%A1%A8%E7%A4%BA%E6%B3%95
 /// - Parameter RPNQueue: 将操作数和操作符分解后的逆波兰表达式队列。
 /// 操作符需经过 mathSymbolSystemTransition() 方法转换
 /// - Returns: 计算结果
@@ -166,8 +171,9 @@ public func SUF_RPNEvaluate(RPNQueue: Queue<[String: Any]>) -> Double? {
             } else {
                 // 取操作数
                 if operandCount == 2 {
-                    let operandLeft = (operandStack.pop())!
+                    // 先弹出右操作数，再弹出左操作数(顺序不能颠倒)。
                     let operandRight = (operandStack.pop())!
+                    let operandLeft = (operandStack.pop())!
                     // 进行计算
                     let result = SUF_mathCalculate.calc(
                         symbol: elementValue as! String,
@@ -305,6 +311,21 @@ public struct SUF_MathAnalyze {
     }
     
     
+    /// 获取数学符号的计算优先级
+    ///
+    /// - Parameter symbol: 数学计算符号：+ - * ／ 等
+    /// - Returns: 优先级
+    public static func getMathSymbolLevel(symbol: String) -> Int? {
+        guard let internalSymbol = symbols[symbol] else {
+            return nil
+        }
+        let level = internalSymbols[internalSymbol]?["level"] as? Int
+        
+        return level
+    }
+    
+    
+    
     /// 检查数学表达式是否都是合法字符
     ///
     /// - Parameter exp: 待检查的表达式（经过 mathSymbolSystemTransition 转换）
@@ -342,9 +363,25 @@ public struct SUF_MathAnalyze {
         return isSameType
     }
     
-    /// 解析数学表达式为数组队列
+    
+    /// 检查数学表达式括号数量是否匹配，支持未经转换和转换后的表达式。
     ///
     /// - Parameter expression: 数学表达式
+    /// - Returns: 检查结果
+    public static func parenthesisCheck(expression: String) -> Bool {
+        let leftParenthesisCount = expression.components(separatedBy: "(").count - 1
+        let rightParenthesisCount = expression.components(separatedBy: ")").count - 1
+        if leftParenthesisCount == rightParenthesisCount {
+            return true
+        } else {
+            print("括号匹配检查不通过")
+            return false
+        }
+    }
+    
+    /// 解析数学表达式为数组队列
+    ///
+    /// - Parameter expression: 未经转换的原始数学表达式
     public static func analyzeMathExpression(expression: String) -> Queue<String>? {
         // 经过符号系统转换的数学表达式
         let exp = mathSymbolSystemTransition(expression)
@@ -367,8 +404,14 @@ public struct SUF_MathAnalyze {
             } else {
                 let one = tempElement[tempElement.index(before: tempElement.endIndex)]
                 let two = exp[index]
+                
+                if one == "(" || one == ")" {
+                    output.enqueue(tempElement)
+                    tempElement = String(two)
+                }
+                    
                 // 判断当前读取的字符，与[临时队列元素] 中的字符是否为同一类型。类型不同则将元素放入队列。
-                if compareTwoSymbolType(one: one, two: two) {
+                else if compareTwoSymbolType(one: one, two: two) {
                     tempElement.append(two)
                 } else {
                     output.enqueue(tempElement)

@@ -27,13 +27,15 @@ class SwiftUtilityFrameworkTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         
-        // SUF_MathAnalyze_test ()
+//         SUF_MathAnalyze_test ()
         
         SUF_ShuntingYard_test()
 
-
 //        Stack_test()
 //        Queue_test()
+        
+//        let level = SUF_MathAnalyze.getMathSymbolLevel(symbol: "*")
+//        print(level)
         
     }
     
@@ -48,10 +50,15 @@ class SwiftUtilityFrameworkTests: XCTestCase {
     }
     
     func SUF_ShuntingYard_test() {
-        let string = "12 + 34 * (56 * (78 + 90) + 110) * (120  + 130) + sin(90)"
-        let resultQueue = SUF_ShuntingYard.ShuntingYardTransform(exp: string)
-        let result = SUF_RPNEvaluate(RPNQueue: resultQueue)
-        print("result:\(result!)")
+//        let string = "12 + 34 * (56 * (78 + 90) + 110) * (120  + 130) + sin(90)"
+        let string = "((15+2+3)*5-50)*3"
+        guard let resultQueue = SUF_ShuntingYard.ShuntingYardTransform(exp: string) else {
+            return
+        }
+        guard let result = SUF_RPNEvaluate(RPNQueue: resultQueue) else {
+            return
+        }
+        print("result:\(result)")
     }
     
     func Stack_test() {

@@ -29,14 +29,12 @@ class SwiftUtilityFrameworkTests: XCTestCase {
         
 //         SUF_MathAnalyze_test ()
         
-        SUF_ShuntingYard_test()
+//        SUF_ShuntingYard_test()
 
 //        Stack_test()
 //        Queue_test()
-        
-//        let level = SUF_MathAnalyze.getMathSymbolLevel(symbol: "*")
-//        print(level)
-        
+        newwork_test()
+
     }
     
     func  SUF_MathAnalyze_test () {
@@ -47,6 +45,10 @@ class SwiftUtilityFrameworkTests: XCTestCase {
         var queue = SUF_MathAnalyze.analyzeMathExpression(expression: string)
         _ = queue?.dequeue()
         XCTAssertEqual((queue?.peek)! , "\u{4E00}", "测试不通过")
+        
+        let level = SUF_MathAnalyze.getMathSymbolLevel(symbol: "*")
+        print(level!)
+
     }
     
     func SUF_ShuntingYard_test() {
@@ -107,6 +109,24 @@ class SwiftUtilityFrameworkTests: XCTestCase {
         queue.enqueue(10)
         print("Is queue full: \(queue.isFull)")
         print("First element: \((queue.peek)!)")
+    }
+    
+    
+    func newwork_test() {
+        let httpSession: HttpSession = HttpSession(sessionType: .Ephemeral, taskType: .DataTask)
+        let url = "http://www.bankcomm.com/BankCommSite/zonghang/cn/whpj/foreignExchangeSearch_Cn.jsp"
+        
+        
+//        let getString = "erectDate=\(date)&nothing=\(date)&pjname=1316"
+        let completion = {(data: Data?, response: URLResponse?, error: Error?) in
+            if error != nil{
+                print(error.debugDescription)
+            } else {
+                print(data!)
+            }
+        }
+        
+        httpSession.get(url: url, completion: completion)
     }
     
 //    func testPerformanceExample() {

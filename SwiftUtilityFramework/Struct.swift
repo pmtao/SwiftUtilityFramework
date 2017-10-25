@@ -149,7 +149,7 @@ public struct SUF_ShuntingYard {
 public func SUF_RPNEvaluate(RPNQueue: Queue<[String: Any]>) -> Double? {
     var queue = RPNQueue // 将操作数和操作符分解后的逆波兰表达式队列
     var operandStack = Stack<Double>() // 要计算的操作数栈
-    var calcResult: Double?
+    var calcResult: Double? // 声明计算结果
     
     while !(queue.isEmpty) {
         let element = (queue.dequeue())!
@@ -379,8 +379,8 @@ public struct SUF_MathAnalyze {
         }
     }
     
-    /// 解析数学表达式为数组队列
-    ///
+    /// 解析数学表达式为数组队列，运算符号将经过符号系统转换。
+    /// 例如：(123+456)*789 将转换为：["(", "123", "一", "456", ")", "丂", "789"]
     /// - Parameter expression: 未经转换的原始数学表达式
     public static func analyzeMathExpression(expression: String) -> Queue<String>? {
         // 经过符号系统转换的数学表达式
@@ -499,10 +499,21 @@ public struct SUF_mathCalculate {
 
 /// 栈结构，可放入任意类型对象，后进栈的永远在栈首，后进先出，通过数组实现。
 public struct Stack<Element> {
+    // MARK: --普通属性-------------------👇
+    // 栈上限
+    public var sizeLimit: Int = 0
     
+    /// 入栈操作的限制方法，方法返回 true 时才能入栈。
+    public var filter: ((Element) -> Bool)?
+    
+    // 栈实例
+    private var stack: [Element]
+    
+    // MARK: --计算属性-------------------👇
     /// 是否为空
     public var isEmpty: Bool { return stack.isEmpty }
-    // 是否装满了
+    
+    /// 是否装满了
     public var isFull: Bool {
         if self.sizeLimit <= 0 {
             return false
@@ -517,14 +528,8 @@ public struct Stack<Element> {
     public var peek: Element? {
         return stack.last
     }
-    // 栈上限
-    public var sizeLimit: Int = 0
-    /// 入栈操作的限制方法，方法返回 true 时才能入栈。
-    public var filter: ((Element) -> Bool)?
     
-    // 栈实例
-    private var stack: [Element]
-    
+    // MARK: --结构体方法-------------------👇
     /// 构造函数
     public init() {
         stack = [Element] ()
@@ -535,6 +540,13 @@ public struct Stack<Element> {
         self.sizeLimit = sizeLimit
         self.filter = filter
         stack = [Element] ()
+    }
+    
+    /// 获取栈元素数组
+    ///
+    /// - Returns: 元素数组
+    public func getStackArray() -> [Element] {
+        return self.stack
     }
     
     /// 向栈内压入一个新元素，压入前需检查栈是否有大小限制、元素过滤条件限制，条件都满足才允许入栈。
@@ -566,6 +578,20 @@ public struct Stack<Element> {
         }
     }
     
+    /// 将队列结构体，转换为栈结构体。
+    ///
+    /// - Parameter queue: 待转换的队列
+    /// - Returns: 转换后的栈
+    public static func convertQueueToStack(queue: Queue<Element>) -> Stack<Element> {
+        let queueArray = queue.getQueueArray() // 获取队列元素数组
+        var stack = Stack<Element>() // 声明转换后的 Stack
+        // 继承 queue 的相似属性
+        stack.stack = queueArray
+        stack.sizeLimit = queue.sizeLimit
+        stack.filter = queue.filter
+        
+        return stack
+    }
     /// 如果栈中的元素是字符串，则将栈中的元素打印输出至一个完整字符串
     ///
     /// - Returns: 输出字符串，如果元素不是字符串类型，则为 nil。
@@ -589,10 +615,23 @@ public struct Stack<Element> {
 
 /// 队列结构，可放入任意类型对象，先进入队列的永远在队首，先进先出，通过数组实现。
 public struct Queue<Element> {
+    // MARK: --普通属性-------------------👇
+    // 栈上限
+    public var sizeLimit: Int = 0
     
+    /// 标志栈达到上限时，是否允许推出队首元素，再加入新元素。
+    public var isDequeueOnFull: Bool = false
+    
+    /// 入栈操作的限制方法，方法返回 true 时才能入栈。
+    public var filter: ((Element) -> Bool)?
+    
+    /// 队列实例
+    private var queue: [Element]
+    
+    // MARK: --计算属性-------------------👇
     /// 是否为空
     public var isEmpty: Bool { return queue.isEmpty }
-    // 队列是否满了
+    /// 队列是否满了
     public var isFull: Bool {
         if self.sizeLimit <= 0 {
             return false
@@ -607,16 +646,8 @@ public struct Queue<Element> {
     public var peek: Element? {
         return queue.first
     }
-    // 栈上限
-    public var sizeLimit: Int = 0
-    /// 标志栈达到上限时，是否允许推出队首元素，再加入新元素。
-    public var isDequeueOnFull: Bool = false
-    /// 入栈操作的限制方法，方法返回 true 时才能入栈。
-    public var filter: ((Element) -> Bool)?
     
-    // 队列实例
-    private var queue: [Element]
-    
+    // MARK: --结构体方法-------------------👇
     /// 构造函数
     public init() {
         queue = [Element]()
@@ -632,6 +663,13 @@ public struct Queue<Element> {
         self.isDequeueOnFull = isDequeueOnFull
         self.filter = filter
         queue = [Element] ()
+    }
+    
+    /// 获取队列元素数组
+    ///
+    /// - Returns: 元素数组
+    public func getQueueArray() -> [Element] {
+        return self.queue
     }
     
     /// 向队列中添加一个新元素，添加前需检查队列是否有大小限制、元素过滤条件限制，条件都满足才允许入队列。
@@ -691,6 +729,20 @@ public struct Queue<Element> {
         }
     }
     
+    /// 将栈结构体，转换为队列结构体。
+    ///
+    /// - Parameter stack: 待转换的栈
+    /// - Returns: 转换后的队列
+    public static func convertStackToQueue(stack: Stack<Element>) -> Queue<Element> {
+        let stackArray = stack.getStackArray() // 获取栈元素数组
+        var queue = Queue<Element>() // 声明转换后的 Queue
+        // 继承 stack 的相似属性
+        queue.queue = stackArray
+        queue.sizeLimit = stack.sizeLimit
+        queue.filter = stack.filter
+        
+        return queue
+    }
     
     /// 如果队列中的元素是字符串，则将队列中的元素打印输出至一个完整字符串
     ///

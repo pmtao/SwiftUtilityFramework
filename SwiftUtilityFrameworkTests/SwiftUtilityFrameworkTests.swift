@@ -32,13 +32,13 @@ class SwiftUtilityFrameworkTests: XCTestCase {
 //        SUF_ShuntingYard_test()
 
 //        Stack_test()
-//        Queue_test()
-        newwork_test()
-
+        Queue_test()
+//        network_test()
+//        print("pmtao".md5())
     }
     
     func  SUF_MathAnalyze_test () {
-        let string = "123+457"
+        let string = "(123+456)*789"
         let exp = SUF_MathAnalyze.mathSymbolSystemTransition(string)
         let valid = try! SUF_MathAnalyze.isMathExpressionValid(exp: exp)
         XCTAssertEqual(valid, "", "测试不通过")
@@ -109,10 +109,14 @@ class SwiftUtilityFrameworkTests: XCTestCase {
         queue.enqueue(10)
         print("Is queue full: \(queue.isFull)")
         print("First element: \((queue.peek)!)")
+        
+        var stack = Stack.convertQueueToStack(queue: queue)
+        print("First element: \((stack.pop())!)")
+        print("Is stack full: \(stack.isFull)")
     }
     
     
-    func newwork_test() {
+    func network_test() {
         let httpSession: HttpSession = HttpSession(sessionType: .Ephemeral, taskType: .DataTask)
         let url = "http://www.bankcomm.com/BankCommSite/zonghang/cn/whpj/foreignExchangeSearch_Cn.jsp"
         

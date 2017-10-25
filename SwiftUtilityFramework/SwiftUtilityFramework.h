@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+
 //! Project version number for SwiftUtilityFramework.
 FOUNDATION_EXPORT double SwiftUtilityFrameworkVersionNumber;
 
@@ -15,5 +16,4 @@ FOUNDATION_EXPORT double SwiftUtilityFrameworkVersionNumber;
 FOUNDATION_EXPORT const unsigned char SwiftUtilityFrameworkVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <SwiftUtilityFramework/PublicHeader.h>
-
 

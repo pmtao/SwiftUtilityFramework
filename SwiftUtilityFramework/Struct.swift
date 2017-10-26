@@ -500,7 +500,7 @@ public struct SUF_mathCalculate {
 /// 栈结构，可放入任意类型对象，后进栈的永远在栈首，后进先出，通过数组实现。
 public struct Stack<Element> {
     // MARK: --普通属性-------------------👇
-    // 栈上限
+    // 栈元素个数上限
     public var sizeLimit: Int = 0
     
     /// 入栈操作的限制方法，方法返回 true 时才能入栈。
@@ -592,6 +592,27 @@ public struct Stack<Element> {
         
         return stack
     }
+    
+    /// 将数组转换为栈
+    ///
+    /// - Parameters:
+    ///   - array: 待转换的数组
+    ///   - sizeLimit: 栈元素个数上限
+    ///   - filter: 入栈操作的限制方法
+    /// - Returns: 转换后的栈
+    public static func convertArrayToStack(
+        array: [Element],
+        sizeLimit: Int = 0,
+        filter: ((Element) -> Bool)? = nil) -> Stack<Element>
+    {
+        var stack = Stack<Element>() // 声明转换后的 Stack
+        stack.stack = array
+        stack.sizeLimit = sizeLimit
+        stack.filter = filter
+        
+        return stack
+    }
+    
     /// 如果栈中的元素是字符串，则将栈中的元素打印输出至一个完整字符串
     ///
     /// - Returns: 输出字符串，如果元素不是字符串类型，则为 nil。
@@ -616,13 +637,13 @@ public struct Stack<Element> {
 /// 队列结构，可放入任意类型对象，先进入队列的永远在队首，先进先出，通过数组实现。
 public struct Queue<Element> {
     // MARK: --普通属性-------------------👇
-    // 栈上限
+    // 队列元素个数上限
     public var sizeLimit: Int = 0
     
-    /// 标志栈达到上限时，是否允许推出队首元素，再加入新元素。
+    /// 标志队列达到上限时，是否允许推出队首元素，再加入新元素。
     public var isDequeueOnFull: Bool = false
     
-    /// 入栈操作的限制方法，方法返回 true 时才能入栈。
+    /// 入队列操作的限制方法，方法返回 true 时才能入队列。
     public var filter: ((Element) -> Bool)?
     
     /// 队列实例
@@ -740,6 +761,28 @@ public struct Queue<Element> {
         queue.queue = stackArray
         queue.sizeLimit = stack.sizeLimit
         queue.filter = stack.filter
+        
+        return queue
+    }
+    
+    /// 将数组转换为队列
+    ///
+    /// - Parameters:
+    ///   - array: 待转换的数组
+    ///   - sizeLimit: 队列元素个数上限
+    ///   - isDequeueOnFull: 标志队列达到上限时，是否允许推出队首元素，再加入新元素。
+    ///   - filter: 入队列操作的限制方法
+    /// - Returns: 转换后的队列
+    public static func convertArrayToQueue(
+        array: [Element],
+        sizeLimit: Int = 0,
+        isDequeueOnFull: Bool = false,
+        filter: ((Element) -> Bool)? = nil) -> Queue<Element>
+    {
+        var queue = Queue<Element>() // 声明转换后的 Queue
+        queue.queue = array
+        queue.sizeLimit = sizeLimit
+        queue.filter = filter
         
         return queue
     }

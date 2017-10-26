@@ -88,6 +88,7 @@ class SwiftUtilityFrameworkTests: XCTestCase {
     }
     
     func Queue_test() {
+        // 队列初始化方法测试
         func filter(obj: Int) -> Bool {
             if obj % 2 == 0 {
                 return true
@@ -110,9 +111,14 @@ class SwiftUtilityFrameworkTests: XCTestCase {
         print("Is queue full: \(queue.isFull)")
         print("First element: \((queue.peek)!)")
         
+        // 栈转换队列测试
         var stack = Stack.convertQueueToStack(queue: queue)
         print("First element: \((stack.pop())!)")
         print("Is stack full: \(stack.isFull)")
+        
+        // 数组转队列测试
+        let queue2 = Queue.convertArrayToQueue(array: ["1","2","3","4"])
+        print(Queue<String>.printQueue(queue: queue2) ?? "")
     }
     
     

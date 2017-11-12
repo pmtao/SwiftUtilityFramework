@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CommonCrypto
 
 extension UIColor {
     
@@ -82,3 +83,67 @@ extension UIImage {
     }
 
 }
+
+extension String {
+    
+    /// 生成字符串的 md5 值
+    ///
+    /// - Returns: 32位的 md5 值。
+    public func md5() -> String {
+        let str = self.cString(using: String.Encoding.utf8)
+        let strLen = CUnsignedInt(self.lengthOfBytes(using: String.Encoding.utf8))
+        let digestLen = Int(CC_MD5_DIGEST_LENGTH)
+        let result = UnsafeMutablePointer<CUnsignedChar>.allocate(capacity: digestLen)
+        CC_MD5(str!, strLen, result)
+        let hash = NSMutableString()
+        for i in 0 ..< digestLen {
+            hash.appendFormat("%02x", result[i])
+        }
+        result.deinitialize()
+        return String(format: hash as String)
+    }
+    
+    /// 通过范围表达式形式读取字符串
+    /// 例如，可以使用 String[3...] 读取字符串从第 4 位到末尾的 Substring。
+    /// - Parameter digitIndex: 范围表达式 n...
+    public subscript(digitIndex: PartialRangeFrom<Int>) -> Substring? {
+        let lowerBound = digitIndex.lowerBound
+        let size = self.count
+        if lowerBound < 0 || lowerBound > size - 1 {
+            return nil
+        }
+        let lowerBoundIndex = index(startIndex, offsetBy: lowerBound)
+        return self[lowerBoundIndex...]
+    }
+    
+    /// 通过范围表达式形式读取字符串
+    /// 例如，可以使用 String[...3] 读取字符串从第 1 位到第 4 位的 Substring。
+    /// - Parameter digitIndex: 范围表达式 ...n
+    public subscript(digitIndex: PartialRangeThrough<Int>) -> Substring? {
+        let upperBound = digitIndex.upperBound
+        let size = self.count
+        if upperBound < 0 || upperBound > size - 1 {
+            return nil
+        }
+        let upperBoundIndex = index(startIndex, offsetBy: upperBound)
+        return self[...upperBoundIndex]
+    }
+    
+    /// 通过范围表达式形式读取字符串
+    /// 例如，可以使用 String[..<3] 读取字符串从第 1 位到第 3 位的 Substring。
+    /// - Parameter digitIndex: 范围表达式 ..<n
+    public subscript(digitIndex: PartialRangeUpTo<Int>) -> Substring? {
+        let upperBound = digitIndex.upperBound
+        let size = self.count
+        if upperBound < 1 || upperBound > size {
+            return nil
+        }
+        let upperBoundIndex = index(startIndex, offsetBy: upperBound)
+        return self[..<upperBoundIndex]
+    }
+    
+    
+    
+    
+}
+

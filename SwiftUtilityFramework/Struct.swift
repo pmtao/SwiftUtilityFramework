@@ -333,7 +333,7 @@ public struct SUF_MathAnalyze {
     public static func isMathExpressionValid(exp: String) throws -> String {
         var undefinedStrings = ""
         // 逐个检查字符的合法性，不合法的放入 undefinedStrings 中。
-        for index in exp.characters.indices {
+        for index in exp.indices {
             let type = checkSymbolType(symbol: exp[index])
             if type == .undefined {
                 undefinedStrings.append(exp[index])
@@ -341,8 +341,8 @@ public struct SUF_MathAnalyze {
             }
         }
         
-        if exp.replacingOccurrences(of: "(", with: "").characters.count !=
-            exp.replacingOccurrences(of: ")", with: "").characters.count {
+        if exp.replacingOccurrences(of: "(", with: "").count !=
+            exp.replacingOccurrences(of: ")", with: "").count {
             throw InvalidType.unmatchedParenthesis
         }
         
@@ -398,7 +398,7 @@ public struct SUF_MathAnalyze {
         var tempElement = "" // 临时队列元素
         
         // 逐个解析字符并放入到队列中
-        for index in exp.characters.indices {
+        for index in exp.indices {
             if tempElement.isEmpty {
                 tempElement.append(exp[index])
             } else {

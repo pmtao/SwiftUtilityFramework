@@ -32,9 +32,10 @@ class SwiftUtilityFrameworkTests: XCTestCase {
 //        SUF_ShuntingYard_test()
 
 //        Stack_test()
-        Queue_test()
+//        Queue_test()
 //        network_test()
 //        print("pmtao".md5())
+        String_test()
     }
     
     func  SUF_MathAnalyze_test () {
@@ -137,6 +138,17 @@ class SwiftUtilityFrameworkTests: XCTestCase {
         }
         
         httpSession.get(url: url, completion: completion)
+    }
+    
+    func String_test() {
+        let a = "If you are good, then you can do it."
+        let a1 = a[3...]
+        let a2 = a[...36]
+        let a3 = a[..<36]
+        XCTAssertEqual(a1, "you are good, then you can do it.", "String_test 不通过")
+        XCTAssertEqual(a2, nil, "String_test 不通过")
+        XCTAssertEqual(a3, "If you are good, then you can do it.", "String_test 不通过")
+        
     }
     
 //    func testPerformanceExample() {

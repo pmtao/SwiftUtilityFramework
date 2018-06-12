@@ -25,7 +25,23 @@ public func SUF_numberFormat(with: Double) -> String {
     
 }
 
-/// 数字格式化(Int类型数字)
+/// 数字格式化(Int64 类型数字)
+///
+/// - Parameter with: 待格式化的数据
+/// - Returns: 格式化结果字符串
+public func SUF_numberFormat(with: Int64) -> String {
+    
+    let format = NumberFormatter()
+    var numberFormated: String
+    
+    format.numberStyle = .decimal
+    numberFormated = format.string(from: NSNumber(value: with))!
+    
+    return numberFormated
+    
+}
+
+/// 数字格式化(Int 类型数字)
 ///
 /// - Parameter with: 待格式化的数据
 /// - Returns: 格式化结果字符串
@@ -78,7 +94,7 @@ public func SUF_stringToNumber(with: String) -> Double? {
 /// - Parameter value: 要转换的值
 /// - Returns: 转换后的字符串
 public func SUF_doubleToFormatedString(value: Double) -> String {
-    let intValue = Int(value)
+    let intValue = Int64(value)
     var doubleString = ""
     
     if Double(intValue) == value {

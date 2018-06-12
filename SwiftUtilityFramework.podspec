@@ -8,10 +8,10 @@ Pod::Spec.new do |s|
   s.platform     = :ios, "8.0"
   s.swift_version = '4.1'
   s.source       = { :git => 'https://github.com/pmtao/SwiftUtilityFramework.git', :tag => s.version }
-  s.source_files = 'SwiftUtilityFramework', 'SwiftUtilityFramework/**/*.{h,m}'
+  s.source_files = 'SwiftUtilityFramework/**/*'
   s.requires_arc = true
   s.preserve_paths = 'SwiftUtilityFramework/**/*'
   s.pod_target_xcconfig = {
-    'SWIFT_INCLUDE_PATHS' => '$(SRCROOT)/SwiftUtilityFramework/CommonCrypto'
+    'SWIFT_INCLUDE_PATHS' => '$(SRCROOT)/SwiftUtilityFramework/SwiftUtilityFramework/CommonCrypto'
   }
 end

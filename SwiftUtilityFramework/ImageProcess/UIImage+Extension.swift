@@ -149,8 +149,8 @@ extension UIImage {
         return maskImageRef!
     }
     
-    /// 方向枚举
-    public enum Direction: String {
+    /// 平面 4 个方向枚举
+    public enum FlatDirection: String {
         case left
         case right
         case top
@@ -163,7 +163,7 @@ extension UIImage {
     ///   - image: 待合并的另一张图片
     ///   - direction: 另一张图片相对于当前图片的位置
     /// - Returns: 合并后的图片
-    public func combine(with image: UIImage, at direction: Direction) -> UIImage? {
+    public func combine(with image: UIImage, at direction: FlatDirection) -> UIImage? {
         switch direction {
         case .left, .right:
             if self.size.height == image.size.height {

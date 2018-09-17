@@ -81,5 +81,4 @@ extension String {
         return String(hmacBase64)
     }
     
-
 }

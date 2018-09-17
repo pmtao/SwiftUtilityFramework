@@ -63,11 +63,12 @@ public struct URLScheme {
     /// 初始化 URLScheme 结构体
     ///
     /// - Parameters:
+    ///   - myScheme: 当前 app 使用的 url scheme，如 bear
     ///   - appBundleNames: 需要支持 XcallBack 操作的 AppBundle 字典，如：["bear": "net.shinyfrog.bear-iOS"]
     ///   - actions: 需要支持 XcallBack 操作的动作字典，如：["Bear": ["saveToBear", "openBearNote"]]
     public init(myScheme: String,
-         appBundleNames: [String: String],
-         actions: [String: [String]]) {
+                appBundleNames: [String: String] = [:],
+                actions: [String: [String]] = [:]) {
         self.myScheme = myScheme
         self.myBaseURL = "\(myScheme)://x-callback-url/"
         self.XcallBackAppBundleNames =
@@ -84,11 +85,11 @@ public struct URLScheme {
     /// 返回结果为元组，第一个值为确认有效的 App Scheme，无效时为 nil）；
     /// 第二个值为源 App Bundle ID，始终有值；
     /// 第三个值为检查发生错误的类型，无错误时为 nil。
-    public func checkSourceApp(options: [UIApplicationOpenURLOptionsKey : Any])
+    public func checkSourceApp(options: [UIApplication.OpenURLOptionsKey : Any])
         -> (String?, String, Error?)
     {
         // 获取发起 App 的 Bundle ID
-        let sourceAppBundleID = options[UIApplicationOpenURLOptionsKey.sourceApplication]! as! String
+        let sourceAppBundleID = options[UIApplication.OpenURLOptionsKey.sourceApplication]! as! String
         // 判断是否为支持的 App
         guard let sourceApp = XcallBackAppBundleNames.first( where: {
             $0.value == sourceAppBundleID
@@ -124,7 +125,7 @@ public struct URLScheme {
     }
     
     /// 打开 URL 页面，自动匹配两种方式：Safari 内置网页、通过 URL Scheme 打开其他 App。
-    static func openApp(_ url: URL, in vc: UIViewController) {
+    public static func openApp(_ url: URL, in vc: UIViewController) {
         if url.scheme == "http" || url.scheme == "https" {
             print("Not app link: \(url)")
         } else {
@@ -153,10 +154,10 @@ public struct URLScheme {
     ///
     /// - Parameters:
     ///   - url: 原始调用的 URL 信息
-    ///   - appBundleID: 调用方 App Bundle ID
+    ///   - sourceAppBundleID: 调用方 App Bundle ID
     /// - Returns: 动作和参数的元组，第一个是动作，第二个是参数字典。
     /// - Throws: 解析错误 ResolveURLSchemeError 类型枚举值
-    public func resolveURLScheme(_ url: URL, from sourceAppBundleID: String)
+    func resolveURLScheme(_ url: URL, from sourceAppBundleID: String)
         throws -> (String, [String: String])?
     {
         var result = ("", [String: String]()) // 最后解析结果
@@ -270,4 +271,80 @@ public struct URLScheme {
         return defaultActions.merging(userActions)
         { (_, new) in new }
     }
+}
+
+/// 表示 app 调用链接的结构体，可用于内部调用和外部调用。
+/// 链接范例："cr://local/Main/ReadingList/Reading/open?mode=present"
+public struct AppLink {
+    var scheme: String
+    var host: String
+    /// url 中的路径部分，如果没有则为空数组
+    var pathComponents: [String]
+    /// url 中表示动作的参数，如果没有则为空。
+    var action: String
+    /// url 中动作附带的参数，如果没有则为空字典。
+    var queryDictionary: [String: String]
+    
+    public init?(_ url: URL) {
+        // 不支持文件类型的链接
+        if url.isFileURL {
+            return nil
+        }
+        // scheme 不能为空
+        if url.scheme == nil {
+            return nil
+        }
+        // host 不能为空
+        if url.host == nil {
+            return nil
+        }
+        self.scheme = url.scheme!
+        self.host = url.host!
+        
+        // 路径和动作需同时获取，默认尾部为动作。如果路径拆分后只有一个元素，则认为它代表动作，路径为空。
+        var pathComponents = url.pathComponents
+        /// 去除初步解析时，开头无用的 “/”。
+        if pathComponents.count > 0 {
+            if pathComponents.first! == "/" {
+                pathComponents.removeFirst()
+            }
+        }
+        if pathComponents.isEmpty {
+            self.action = ""
+            self.pathComponents = []
+        } else {
+            self.action = pathComponents.last!
+            pathComponents.removeLast()
+            self.pathComponents = pathComponents
+        }
+        
+        // 获取参数字典，标准格式: param1=value1&param2=value2
+        let query = url.query
+        if query == nil || query!.isEmpty {
+            self.queryDictionary = [:]
+        } else {
+            // queryArray 范例：["param1=value1", "param2=value2"]
+            var queryArray = query!.components(separatedBy: "&")
+            // 去除首尾的空字符
+            if queryArray.first! == "" {
+                queryArray.removeFirst()
+            }
+            if queryArray.last! == "" {
+                queryArray.removeLast()
+            }
+            // queryDictionary 范例：["param1": "value1", "param2": "value2"]
+            var queryDictionary = [String: String]()
+            for param in queryArray {
+                let paramArray = param.components(separatedBy: "=")
+                // 确保解析的参数和值都有，且都不为空。
+                if paramArray.count == 2 &&
+                    !(paramArray.first!.isEmpty) &&
+                    !(paramArray.last!.isEmpty) {
+                    queryDictionary[paramArray.first!] = paramArray.last!
+                }
+            }
+            self.queryDictionary = queryDictionary
+        }
+    }
+    
 }

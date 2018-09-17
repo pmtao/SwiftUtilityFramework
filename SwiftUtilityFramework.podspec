@@ -8,10 +8,45 @@ Pod::Spec.new do |s|
   s.platform     = :ios, "8.0"
   s.swift_version = '4.1'
   s.source       = { :git => 'https://github.com/pmtao/SwiftUtilityFramework.git', :tag => s.version }
-  s.source_files = 'SwiftUtilityFramework/**/*'
+  s.source_files = 'SwiftUtilityFramework/**/*.{h,m,swift}'
+  s.resources = 'SwiftUtilityFramework/**/*.{png}'
   s.requires_arc = true
   s.preserve_paths = 'SwiftUtilityFramework/**/*'
   s.pod_target_xcconfig = {
-    'SWIFT_INCLUDE_PATHS' => '$(SRCROOT)/SwiftUtilityFramework/SwiftUtilityFramework/CommonCrypto'
+    #'SWIFT_INCLUDE_PATHS' => '/Users/pmtao/Tech/Repositories/Github/SwiftUtilityFramework/SwiftUtilityFramework/CommonCrypto'
+    #'$(SRCROOT)/SwiftUtilityFramework/SwiftUtilityFramework/CommonCrypto'
   }
+  
+  s.default_subspec = 'SwiftUtilityFramework'
+  s.subspec 'SwiftUtilityFramework' do |suf|
+    suf.source_files = 'SwiftUtilityFramework/**/*.{h,m,swift}'
+  end
+  
+  # ImageProcess 子模块
+  s.subspec 'ImageProcess' do |imageProcess|
+    imageProcess.source_files = 'SwiftUtilityFramework/ImageProcess/**/*.{h,m,swift}'
+  end
+  
+  # Foundation 子模块
+  s.subspec 'Foundation' do |foundation|
+    foundation.source_files = 'SwiftUtilityFramework/Foundation/**/*.{h,m,swift}'
+  end
+
+  # UIKit 子模块
+  s.subspec 'UIKit' do |uiKit|
+    uiKit.source_files = 'SwiftUtilityFramework/UIKit/**/*.{h,m,swift}'
+  end
+  
+  # Network 子模块
+  s.subspec 'Network' do |network|
+    network.source_files = 'SwiftUtilityFramework/Network/**/*.{h,m,swift}'
+  end
+  
+    # Algorithm 子模块
+  s.subspec 'Algorithm' do |algorithm|
+    algorithm.source_files = 'SwiftUtilityFramework/Algorithm/**/*.{h,m,swift}'
+  end
+  
+  
+  
 end

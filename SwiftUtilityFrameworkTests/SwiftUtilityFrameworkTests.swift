@@ -124,7 +124,7 @@ class SwiftUtilityFrameworkTests: XCTestCase {
     
     
     func network_test() {
-        let httpSession: HttpSession = HttpSession(sessionType: .Ephemeral, taskType: .DataTask)
+        var httpSession: HttpSession = HttpSession(sessionType: .Ephemeral, taskType: .DataTask)
         let url = "http://www.bankcomm.com/BankCommSite/zonghang/cn/whpj/foreignExchangeSearch_Cn.jsp"
         
         

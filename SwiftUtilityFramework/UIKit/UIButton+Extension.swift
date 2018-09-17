@@ -15,7 +15,7 @@ extension UIButton {
     /// - Parameters:
     ///   - title: 待修改的标题文字
     ///   - state: 待修改的按钮状态
-    func changeTitleSmoothly(_ title: String, for state : UIControlState) {
+    func changeTitleSmoothly(_ title: String, for state : UIControl.State) {
         self.titleLabel?.text = title
         self.setTitle(title, for: state)
     }

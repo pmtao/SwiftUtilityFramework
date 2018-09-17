@@ -27,7 +27,7 @@ public func SUF_impactFeedBack(feedBackType: String = "impact", strength: Int = 
             
             switch feedBackType {
             case "impact":
-                if let style = UIImpactFeedbackStyle(rawValue: strength) {
+                if let style = UIImpactFeedbackGenerator.FeedbackStyle(rawValue: strength) {
                     impactFeedBack = UIImpactFeedbackGenerator(style: style)
                     impactFeedBack.impactOccurred()
                 }
@@ -35,7 +35,7 @@ public func SUF_impactFeedBack(feedBackType: String = "impact", strength: Int = 
                 selectFeedBack = UISelectionFeedbackGenerator()
                 selectFeedBack.selectionChanged()
             case "notify":
-                if let style = UINotificationFeedbackType(rawValue: strength) {
+                if let style = UINotificationFeedbackGenerator.FeedbackType(rawValue: strength) {
                     notifyFeedBack = UINotificationFeedbackGenerator()
                     notifyFeedBack.notificationOccurred(style)
                 }

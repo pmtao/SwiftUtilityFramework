@@ -1,5 +1,5 @@
 //
-//  Function.swift
+//  NumberFormatter.swift
 //  SwiftUtilityFramework
 //
 //  Created by 阿涛 on 17-8-16.

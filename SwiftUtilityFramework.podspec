@@ -5,11 +5,11 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/pmtao/SwiftUtilityFramework"
   s.license      = "MIT"
   s.authors      = { 'Meler Paine' => 'pmtnmd@gmail.com'}
-  s.platform     = :ios, "8.0"
-  s.swift_version = '4.1'
+  s.platform     = :ios, "10.0"
+  s.swift_version = '4.2'
   s.source       = { :git => 'https://github.com/pmtao/SwiftUtilityFramework.git', :tag => s.version }
   s.source_files = 'SwiftUtilityFramework/**/*.{h,m,swift}'
-  s.resources = 'SwiftUtilityFramework/**/*.{png}'
+  s.resources = 'SwiftUtilityFramework/**/*.{png,xib,storyboard}'
   s.requires_arc = true
   s.preserve_paths = 'SwiftUtilityFramework/**/*'
   s.pod_target_xcconfig = {
@@ -22,11 +22,6 @@ Pod::Spec.new do |s|
     suf.source_files = 'SwiftUtilityFramework/**/*.{h,m,swift}'
   end
   
-  # ImageProcess 子模块
-  s.subspec 'ImageProcess' do |imageProcess|
-    imageProcess.source_files = 'SwiftUtilityFramework/ImageProcess/**/*.{h,m,swift}'
-  end
-  
   # Foundation 子模块
   s.subspec 'Foundation' do |foundation|
     foundation.source_files = 'SwiftUtilityFramework/Foundation/**/*.{h,m,swift}'
@@ -35,6 +30,18 @@ Pod::Spec.new do |s|
   # UIKit 子模块
   s.subspec 'UIKit' do |uiKit|
     uiKit.source_files = 'SwiftUtilityFramework/UIKit/**/*.{h,m,swift}'
+    uiKit.resources = 'SwiftUtilityFramework/UIKit/**/*.{png,xib,storyboard}'
+  end
+  
+  # Polyfill 子模块
+  s.subspec 'Polyfill' do |polyfill|
+    polyfill.source_files = 'SwiftUtilityFramework/Polyfill/**/*.{h,m,swift}'
+  end
+  
+  # Storage 子模块
+  s.subspec 'Storage' do |storage|
+    storage.source_files = 'SwiftUtilityFramework/Storage/**/*.{h,m,swift}'
+    storage.dependency 'SwiftUtilityFramework/Foundation'
   end
   
   # Network 子模块
@@ -42,11 +49,14 @@ Pod::Spec.new do |s|
     network.source_files = 'SwiftUtilityFramework/Network/**/*.{h,m,swift}'
   end
   
+  # ImageProcess 子模块
+  s.subspec 'ImageProcess' do |imageProcess|
+    imageProcess.source_files = 'SwiftUtilityFramework/ImageProcess/**/*.{h,m,swift}'
+  end
+  
     # Algorithm 子模块
   s.subspec 'Algorithm' do |algorithm|
     algorithm.source_files = 'SwiftUtilityFramework/Algorithm/**/*.{h,m,swift}'
   end
-  
-  
   
 end

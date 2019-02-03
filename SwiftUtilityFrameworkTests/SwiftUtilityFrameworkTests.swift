@@ -35,7 +35,10 @@ class SwiftUtilityFrameworkTests: XCTestCase {
 //        Queue_test()
 //        network_test()
 //        print("pmtao".md5())
-        String_test()
+//        String_test()
+//        linkListTest()
+//        linkListReverseTest()
+        linkListLoopTest()
     }
     
     func  SUF_MathAnalyze_test () {
@@ -150,6 +153,39 @@ class SwiftUtilityFrameworkTests: XCTestCase {
         XCTAssertEqual(a3, "If you are good, then you can do it.", "String_test 不通过")
         
     }
+    
+    /// test for LinkList.swift
+    func linkListTest() {
+        let word = SingleLinkedList<Character>(["a", "b", "c", "c", "b", "a"])
+        print(word)
+        XCTAssertEqual(isWordPalindrome(word), true, "The word is not palindrome.")
+        
+        
+        
+        let word2 = SingleLinkedList<Character>()
+        XCTAssertEqual(isWordPalindrome(word2), false)
+        
+        let word3 = SingleLinkedList<Character>(["a"])
+        XCTAssertEqual(isWordPalindrome(word3), false)
+        
+    }
+    
+    func linkListReverseTest() {
+        let word = SingleLinkedList<Character>(["a", "b", "c"])
+        let wordReversed = word.reverse()
+        print(word)
+        print(wordReversed)
+    }
+    
+    func linkListLoopTest() {
+        let word = SingleLinkedList<Character>(["a", "b", "c", "d"])
+        let node = word.addToTail("e")
+        _ = word.addToTail("f")
+        _ = word.addToTail("g")
+        word.tail?.next = node
+    }
+    
+    
     
 //    func testPerformanceExample() {
 //        // This is an example of a performance test case.

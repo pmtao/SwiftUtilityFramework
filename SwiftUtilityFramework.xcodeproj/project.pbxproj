@@ -27,13 +27,10 @@
 		22BC200721F169DA00D57F6D /* NaturalLanguage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BC200621F169DA00D57F6D /* NaturalLanguage.framework */; };
 		22BC200921F16BEF00D57F6D /* TextReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BC200821F16BEF00D57F6D /* TextReader.swift */; };
 		22BC200B21F16DF200D57F6D /* TextSpell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BC200A21F16DF200D57F6D /* TextSpell.swift */; };
-		22BC201721F1D21400D57F6D /* SlideCardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BC201121F1D21400D57F6D /* SlideCardsViewController.swift */; };
 		22BC201821F1D21400D57F6D /* SlideCardsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BC201321F1D21400D57F6D /* SlideCardsCell.swift */; };
-		22BC201921F1D21400D57F6D /* SlideCards.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22BC201421F1D21400D57F6D /* SlideCards.storyboard */; };
 		22BC201A21F1D21400D57F6D /* SlideCardsLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BC201521F1D21400D57F6D /* SlideCardsLayout.swift */; };
 		22BC201B21F1D21400D57F6D /* SlideCardsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BC201621F1D21400D57F6D /* SlideCardsProtocol.swift */; };
 		22BC201D21F1D36100D57F6D /* ResourceSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BC201C21F1D36100D57F6D /* ResourceSet.swift */; };
-		22BC201F21F2A37A00D57F6D /* SlideCardsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22BC201E21F2A37A00D57F6D /* SlideCardsCell.xib */; };
 		22BF936D21537E820063151A /* CoreDataEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF936C21537E820063151A /* CoreDataEnvironment.swift */; };
 		22BF93802153AB040063151A /* NSManagedObjectContext+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF937F2153AB040063151A /* NSManagedObjectContext+Extension.swift */; };
 		22C302FE20ECD3C3006BA86A /* Poppin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C302FD20ECD3C3006BA86A /* Poppin.swift */; };
@@ -95,13 +92,10 @@
 		22BC200621F169DA00D57F6D /* NaturalLanguage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NaturalLanguage.framework; path = System/Library/Frameworks/NaturalLanguage.framework; sourceTree = SDKROOT; };
 		22BC200821F16BEF00D57F6D /* TextReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextReader.swift; sourceTree = "<group>"; };
 		22BC200A21F16DF200D57F6D /* TextSpell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextSpell.swift; sourceTree = "<group>"; };
-		22BC201121F1D21400D57F6D /* SlideCardsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideCardsViewController.swift; sourceTree = "<group>"; };
 		22BC201321F1D21400D57F6D /* SlideCardsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideCardsCell.swift; sourceTree = "<group>"; };
-		22BC201421F1D21400D57F6D /* SlideCards.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SlideCards.storyboard; sourceTree = "<group>"; };
 		22BC201521F1D21400D57F6D /* SlideCardsLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideCardsLayout.swift; sourceTree = "<group>"; };
 		22BC201621F1D21400D57F6D /* SlideCardsProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideCardsProtocol.swift; sourceTree = "<group>"; };
 		22BC201C21F1D36100D57F6D /* ResourceSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceSet.swift; sourceTree = "<group>"; };
-		22BC201E21F2A37A00D57F6D /* SlideCardsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SlideCardsCell.xib; sourceTree = "<group>"; };
 		22BF936C21537E820063151A /* CoreDataEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataEnvironment.swift; sourceTree = "<group>"; };
 		22BF937F2153AB040063151A /* NSManagedObjectContext+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Extension.swift"; sourceTree = "<group>"; };
 		22C302FD20ECD3C3006BA86A /* Poppin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Poppin.swift; sourceTree = "<group>"; };
@@ -383,7 +377,6 @@
 		22BC201021F1D0C700D57F6D /* SlideCards */ = {
 			isa = PBXGroup;
 			children = (
-				22BC201121F1D21400D57F6D /* SlideCardsViewController.swift */,
 				22BC201521F1D21400D57F6D /* SlideCardsLayout.swift */,
 				22BC201621F1D21400D57F6D /* SlideCardsProtocol.swift */,
 				22BC201221F1D21400D57F6D /* View */,
@@ -394,11 +387,9 @@
 		22BC201221F1D21400D57F6D /* View */ = {
 			isa = PBXGroup;
 			children = (
-				22BC201321F1D21400D57F6D /* SlideCardsCell.swift */,
-				22BC201E21F2A37A00D57F6D /* SlideCardsCell.xib */,
 				22D4816D220679200082D360 /* SlideCards.swift */,
 				229D921F2206784B00F927FE /* SlideCards.xib */,
-				22BC201421F1D21400D57F6D /* SlideCards.storyboard */,
+				22BC201321F1D21400D57F6D /* SlideCardsCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -585,8 +576,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22BC201921F1D21400D57F6D /* SlideCards.storyboard in Resources */,
-				22BC201F21F2A37A00D57F6D /* SlideCardsCell.xib in Resources */,
 				229D92202206784C00F927FE /* SlideCards.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -645,7 +634,6 @@
 				225ECAA221931E6B00777959 /* Swizzling.swift in Sources */,
 				22BC200B21F16DF200D57F6D /* TextSpell.swift in Sources */,
 				22F4098D217CB297001828FA /* UserDefaults.swift in Sources */,
-				22BC201721F1D21400D57F6D /* SlideCardsViewController.swift in Sources */,
 				22D592741FF0B322007B44B0 /* UIColor+Extension.swift in Sources */,
 				22DAE90F2176D4F400033C7A /* TimeFormatter.swift in Sources */,
 				22C3030520ECFE78006BA86A /* StoppingSignalTimer.swift in Sources */,

@@ -12,8 +12,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SlideCards" customModule="SwiftUtilityFramework" customModuleProvider="target">
             <connections>
-                <outlet property="collectionView" destination="Blc-vu-ohO" id="hHw-cq-Cgj"/>
-                <outlet property="pageControl" destination="ivH-pP-1J8" id="fTr-x9-yaN"/>
+                <outlet property="collectionView" destination="Blc-vu-ohO" id="VPw-OC-xOy"/>
+                <outlet property="pageControl" destination="ivH-pP-1J8" id="rw2-mb-hjD"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -33,7 +33,6 @@
                     <collectionViewLayout key="collectionViewLayout" id="5su-ES-v7m" customClass="SlideCardsLayout" customModule="SwiftUtilityFramework" customModuleProvider="target"/>
                 </collectionView>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="Blc-vu-ohO" secondAttribute="bottom" id="2G3-BA-WFN"/>
                 <constraint firstAttribute="trailing" secondItem="ivH-pP-1J8" secondAttribute="trailing" id="2wf-ND-1W9"/>

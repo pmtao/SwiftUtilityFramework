@@ -11,11 +11,18 @@ import Speech
 
 public class TextReader {
     
-    public static func readText(_ text: String) {
+    weak var synthesizerDelegate: AVSpeechSynthesizerDelegate?
+    public var syntesizer = AVSpeechSynthesizer()
+    
+    public init(synthesizerDelegate: AVSpeechSynthesizerDelegate) {
+        self.synthesizerDelegate = synthesizerDelegate
+        syntesizer.delegate = synthesizerDelegate
+    }
+    
+    public func readText(_ text: String) {
         let textLanguage = TextTagger.decideTextLanguage(text)
         let isEnglishWord = TextTagger.englishWordDetect(text)
         let voices = AVSpeechSynthesisVoice.speechVoices()
-        let syntesizer = AVSpeechSynthesizer()
         let utterance = AVSpeechUtterance(string: text)
         var zh_voices:[AVSpeechSynthesisVoice] = []
         var enGB_voices:[AVSpeechSynthesisVoice] = []

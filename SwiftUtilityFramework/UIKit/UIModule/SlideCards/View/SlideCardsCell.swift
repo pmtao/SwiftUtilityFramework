@@ -16,24 +16,24 @@ open class SlideCardsCell: UICollectionViewCell {
     
     open override func awakeFromNib() {
         super.awakeFromNib()
-        backgroundImageView.contentMode = .scaleAspectFill
-        backgroundImageView.clipsToBounds = true
-        contentView.addSubview(backgroundShadowView)
-        contentView.addSubview(backgroundImageView)
-        self.clipsToBounds = false
+        setup()
     }
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
+        setup()
+    }
+    
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    public func setup() {
         backgroundImageView.contentMode = .scaleAspectFill
         backgroundImageView.clipsToBounds = true
         contentView.addSubview(backgroundShadowView)
         contentView.addSubview(backgroundImageView)
         self.clipsToBounds = false
-    }
-    
-    public required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
     }
     
     override open var bounds: CGRect {

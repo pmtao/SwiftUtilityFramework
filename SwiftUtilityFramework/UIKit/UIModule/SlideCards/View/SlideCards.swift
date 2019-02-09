@@ -8,13 +8,9 @@
 
 import UIKit
 
-@IBDesignable
 open class SlideCards: UIView {
-    
-    public var contentView : UIView?
-    
-    @IBOutlet weak var pageControl: UIPageControl!
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet public weak var pageControl: UIPageControl!
+    @IBOutlet public weak var collectionView: UICollectionView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -27,9 +23,7 @@ open class SlideCards: UIView {
     }
     
     func xibSetup() {
-        contentView = loadViewFromNib()
-        
-        // use bounds not frame or it'll be offset
+        let contentView = loadViewFromNib()
         contentView!.frame = bounds
         
         // Make the view stretch with containing view
@@ -37,9 +31,19 @@ open class SlideCards: UIView {
             UIView.AutoresizingMask.flexibleWidth,
             UIView.AutoresizingMask.flexibleHeight]
         
-        // Adding custom subview on top of our view (over any custom drawing > see note below)
         addSubview(contentView!)
+        setupCollectionView()
     }
+    
+    func setupCollectionView() {
+        collectionView.isPagingEnabled = true
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.delaysContentTouches = false
+        if #available(iOS 11.0, *) {
+            collectionView.contentInsetAdjustmentBehavior = .never
+        }
+    }
+    
     
     func loadViewFromNib() -> UIView! {
         let bundle = Bundle(for: type(of: self))
@@ -48,4 +52,19 @@ open class SlideCards: UIView {
         return view
     }
     
+//    func getCurrentPage() -> Int {
+//        return max(Int(collectionView.contentOffset.x) / Int(collectionView.bounds.width), 0)
+//    }
 }
+
+//extension SlideCards: UIScrollViewDelegate {
+//    
+//    open func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
+//        pageControl.currentPage = getCurrentPage()
+//    }
+//    
+//    open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+//        pageControl.currentPage = getCurrentPage()
+//    }
+//    
+//}

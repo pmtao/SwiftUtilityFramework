@@ -12,6 +12,7 @@ extension UIViewController {
 
     
     /// 只显示一个提示信息的提示框，点击按钮后可执行指定操作。
+    @available(*, deprecated, message: "This function has issue, please use UIInfo.hint(title:message:)")
     public func simpleAlert(title: String,
                             message: String,
                             buttonTitle: String,

@@ -40,6 +40,18 @@ public class TextTagger {
         }
     }
     
-    
+    /// 提取英文句子中所有单词的词根
+    public static func getEnglishSentenceLemma(_ sentence: String) -> [String] {
+        var lemmas: [String] = []
+        let range = NSRange(location: 0, length: sentence.count)
+        let options: NSLinguisticTagger.Options = [.omitPunctuation, .omitWhitespace]
+        let orthography = NSOrthography(dominantScript: "Latn", languageMap: ["Latn": ["en"]])
+        (sentence as NSString).enumerateLinguisticTags(in: range, scheme: .lemma, options: options, orthography: orthography) { (tag, tokenRange, sentenceRange, _) in
+            if let lemma = tag?.rawValue {
+                lemmas.append(lemma)
+            }
+        }
+        return lemmas
+    }
     
 }

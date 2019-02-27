@@ -12,11 +12,17 @@
 		2243F8901F57F99B005EB47C /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2243F88F1F57F99B005EB47C /* Network.swift */; };
 		2250C9F4209334FC00D0EC10 /* String+Encrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2250C9F3209334FC00D0EC10 /* String+Encrypt.swift */; };
 		2256B19E2108611400278336 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2256B19D2108611400278336 /* UIView+Extension.swift */; };
+		2257B9C022261FF200F431CB /* KeyBoardNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2257B9BF22261FF200F431CB /* KeyBoardNotification.swift */; };
+		2257B9C222262C0D00F431CB /* TypedNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2257B9C122262C0D00F431CB /* TypedNotification.swift */; };
 		225ECAA221931E6B00777959 /* Swizzling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225ECAA121931E6B00777959 /* Swizzling.swift */; };
 		227D05B9215062FA0095032E /* DataImportable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227D05B8215062FA0095032E /* DataImportable.swift */; };
 		227D05BC2150655A0095032E /* CoreDataObjectManageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227D05BB2150655A0095032E /* CoreDataObjectManageable.swift */; };
 		227D05BE215068AB0095032E /* CoreDataContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227D05BD215068AB0095032E /* CoreDataContainer.swift */; };
 		227E522C21815D0C00FBF805 /* UIScrollView+Polyfill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227E522B21815D0B00FBF805 /* UIScrollView+Polyfill.swift */; };
+		227FB99B221D48A7007E6D2B /* TinyHTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227FB99A221D48A7007E6D2B /* TinyHTTP.swift */; };
+		227FB99D221D59D3007E6D2B /* JSONValueCompatible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227FB99C221D59D3007E6D2B /* JSONValueCompatible.swift */; };
+		227FB99F221D5CBD007E6D2B /* HttpEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227FB99E221D5CBD007E6D2B /* HttpEncoder.swift */; };
+		227FB9A2221E402A007E6D2B /* Dictionary+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227FB9A1221E402A007E6D2B /* Dictionary+Extension.swift */; };
 		229D92202206784C00F927FE /* SlideCards.xib in Resources */ = {isa = PBXBuildFile; fileRef = 229D921F2206784B00F927FE /* SlideCards.xib */; };
 		22A18635216C448B00C493CD /* TableViewDataModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A18634216C448B00C493CD /* TableViewDataModelProtocol.swift */; };
 		22A4089520D017C2007AF190 /* Information.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A4089320D017C2007AF190 /* Information.swift */; };
@@ -78,11 +84,17 @@
 		2248579D20E7C2490027E540 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		2250C9F3209334FC00D0EC10 /* String+Encrypt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Encrypt.swift"; sourceTree = "<group>"; };
 		2256B19D2108611400278336 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		2257B9BF22261FF200F431CB /* KeyBoardNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBoardNotification.swift; sourceTree = "<group>"; };
+		2257B9C122262C0D00F431CB /* TypedNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypedNotification.swift; sourceTree = "<group>"; };
 		225ECAA121931E6B00777959 /* Swizzling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Swizzling.swift; sourceTree = "<group>"; };
 		227D05B8215062FA0095032E /* DataImportable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataImportable.swift; sourceTree = "<group>"; };
 		227D05BB2150655A0095032E /* CoreDataObjectManageable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataObjectManageable.swift; sourceTree = "<group>"; };
 		227D05BD215068AB0095032E /* CoreDataContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataContainer.swift; sourceTree = "<group>"; };
 		227E522B21815D0B00FBF805 /* UIScrollView+Polyfill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Polyfill.swift"; sourceTree = "<group>"; };
+		227FB99A221D48A7007E6D2B /* TinyHTTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TinyHTTP.swift; sourceTree = "<group>"; };
+		227FB99C221D59D3007E6D2B /* JSONValueCompatible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONValueCompatible.swift; sourceTree = "<group>"; };
+		227FB99E221D5CBD007E6D2B /* HttpEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpEncoder.swift; sourceTree = "<group>"; };
+		227FB9A1221E402A007E6D2B /* Dictionary+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extension.swift"; sourceTree = "<group>"; };
 		229D921F2206784B00F927FE /* SlideCards.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SlideCards.xib; sourceTree = "<group>"; };
 		22A18634216C448B00C493CD /* TableViewDataModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDataModelProtocol.swift; sourceTree = "<group>"; };
 		22A4089320D017C2007AF190 /* Information.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Information.swift; sourceTree = "<group>"; };
@@ -162,6 +174,15 @@
 			path = TextKit;
 			sourceTree = "<group>";
 		};
+		2257B9BE22261FDE00F431CB /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				2257B9C122262C0D00F431CB /* TypedNotification.swift */,
+				2257B9BF22261FF200F431CB /* KeyBoardNotification.swift */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
 		2257F2E9214F7C48007DE047 /* ImageProcess */ = {
 			isa = PBXGroup;
 			children = (
@@ -182,6 +203,7 @@
 				22C9F74120E489AB00B5D11A /* Dispatch */,
 				2257F2F0214F8AF8007DE047 /* Formatter */,
 				225ECAA021931E4300777959 /* Runtime */,
+				2257B9BE22261FDE00F431CB /* Notification */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -214,13 +236,12 @@
 		2257F2F1214F8B12007DE047 /* Basic */ = {
 			isa = PBXGroup;
 			children = (
+				227FB9A3221E404D007E6D2B /* Collection */,
 				22E6874C21A2A3FA004B1B74 /* DataTypes */,
 				22D592781FF0B3F4007B44B0 /* String+Subscript.swift */,
 				2250C9F3209334FC00D0EC10 /* String+Encrypt.swift */,
 				2201AF5B1F9E362E000E12FB /* CommonCrypto */,
 				22E8B89120CE7EBA0092DFF0 /* String+Encode.swift */,
-				22B672B1203E69AD0014F28E /* Array+Extension.swift */,
-				22B672AF203E68EC0014F28E /* Sequence+Extension.swift */,
 				22EF24462152487E003428EC /* Result.swift */,
 			);
 			path = Basic;
@@ -246,6 +267,9 @@
 			isa = PBXGroup;
 			children = (
 				2243F88F1F57F99B005EB47C /* Network.swift */,
+				227FB99A221D48A7007E6D2B /* TinyHTTP.swift */,
+				227FB99E221D5CBD007E6D2B /* HttpEncoder.swift */,
+				227FB9A0221D70BA007E6D2B /* Protocol */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -329,6 +353,24 @@
 				227E522B21815D0B00FBF805 /* UIScrollView+Polyfill.swift */,
 			);
 			path = Polyfill;
+			sourceTree = "<group>";
+		};
+		227FB9A0221D70BA007E6D2B /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				227FB99C221D59D3007E6D2B /* JSONValueCompatible.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
+		227FB9A3221E404D007E6D2B /* Collection */ = {
+			isa = PBXGroup;
+			children = (
+				22B672B1203E69AD0014F28E /* Array+Extension.swift */,
+				227FB9A1221E402A007E6D2B /* Dictionary+Extension.swift */,
+				22B672AF203E68EC0014F28E /* Sequence+Extension.swift */,
+			);
+			path = Collection;
 			sourceTree = "<group>";
 		};
 		22A18632216C446900C493CD /* TableView */ = {
@@ -605,9 +647,11 @@
 				227D05B9215062FA0095032E /* DataImportable.swift in Sources */,
 				221F01CF20D0B15800F8D1D7 /* UIEnhancedLabel.swift in Sources */,
 				22EF24472152487E003428EC /* Result.swift in Sources */,
+				2257B9C222262C0D00F431CB /* TypedNotification.swift in Sources */,
 				22BF93802153AB040063151A /* NSManagedObjectContext+Extension.swift in Sources */,
 				22B672B2203E69AD0014F28E /* Array+Extension.swift in Sources */,
 				221F01D320D0B55600F8D1D7 /* URLScheme.swift in Sources */,
+				227FB99D221D59D3007E6D2B /* JSONValueCompatible.swift in Sources */,
 				227D05BE215068AB0095032E /* CoreDataContainer.swift in Sources */,
 				22D4816E220679200082D360 /* SlideCards.swift in Sources */,
 				2250C9F4209334FC00D0EC10 /* String+Encrypt.swift in Sources */,
@@ -615,10 +659,14 @@
 				22BC201D21F1D36100D57F6D /* ResourceSet.swift in Sources */,
 				22C302FE20ECD3C3006BA86A /* Poppin.swift in Sources */,
 				22D5927B1FF0B432007B44B0 /* UIButton+Extension.swift in Sources */,
+				227FB9A2221E402A007E6D2B /* Dictionary+Extension.swift in Sources */,
+				227FB99F221D5CBD007E6D2B /* HttpEncoder.swift in Sources */,
 				227D05BC2150655A0095032E /* CoreDataObjectManageable.swift in Sources */,
 				22E8B89220CE7EBA0092DFF0 /* String+Encode.swift in Sources */,
 				22BC201B21F1D21400D57F6D /* SlideCardsProtocol.swift in Sources */,
 				22C9F74320E489CD00B5D11A /* DispatchObject+Extension.swift in Sources */,
+				227FB99B221D48A7007E6D2B /* TinyHTTP.swift in Sources */,
+				2257B9C022261FF200F431CB /* KeyBoardNotification.swift in Sources */,
 				22D592761FF0B3AE007B44B0 /* UIImage+Extension.swift in Sources */,
 				22BC200421F168E700D57F6D /* TextTagger.swift in Sources */,
 				22F1C24C1F46D0D800C9B73A /* ShuntingYard.swift in Sources */,

@@ -69,7 +69,7 @@ public class TextTagger {
     }
     
     /// 分解英文句子提取详细信息，返回为元组类型的数组，元组中依次为原始单词、单词的词根、单词所在句子的范围。
-    /// - 当提取的词根为 nil 时，对原词为以下情况的需要忽略：纯数字，带标点的单词缩写:'ll 've 等。
+    /// - 当提取的词根为 nil 时，只保留原词全部为英文字母的情况，其他情况需要忽略，如：纯数字，带标点的单词缩写:'ll 've 等。
     public static func analyzeEnglishSentence(_ sentence: String) -> [(String, String?, NSRange)] {
         var result: [(String, String?, NSRange)] = []
         let range = NSRange(location: 0, length: sentence.count)
@@ -80,9 +80,9 @@ public class TextTagger {
             let resultItem = (originWord, tag?.rawValue, sentenceRange)
             if tag == nil {
                 // 词根为空时的处理
-                let numberCharSet = CharacterSet(charactersIn: "0123456789")
+                let letterCharSet = CharacterSet(charactersIn: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
                 let wordSet = CharacterSet(charactersIn: originWord)
-                if (wordSet.isSubset(of: numberCharSet) || originWord.contains("'")) == false {
+                if wordSet.isSubset(of: letterCharSet) {
                     result.append(resultItem)
                 }
             } else {

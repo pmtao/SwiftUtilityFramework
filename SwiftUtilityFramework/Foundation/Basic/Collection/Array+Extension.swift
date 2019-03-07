@@ -47,4 +47,10 @@ extension Array {
         }
         return count
     }
+    
+    /// 标记一个数组是否不为空
+    public var isNotEmpty: Bool {
+        return !self.isEmpty
+    }
+    
 }

@@ -3,7 +3,7 @@
 //  SwiftUtilityFramework
 //
 //  Created by Meler Paine on 2018/11/19.
-//  Copyright © 2018 SinkingSoul. All rights reserved.
+//  Copyright © 2019 SinkingSoul. All rights reserved.
 //
 
 import Foundation

@@ -3,7 +3,7 @@
 //  SwiftUtilityFramework
 //
 //  Created by 阿涛 on 18-4-26.
-//  Copyright © 2018年 SinkingSoul. All rights reserved.
+//  Copyright © 2019年 SinkingSoul. All rights reserved.
 //
 
 import UIKit
@@ -98,8 +98,14 @@ public class UIInfo {
             }
             alertController.addAction(performAction)
         }
+        
         let rootVC = UIViewController()
         rootVC.view.backgroundColor = nil
+        // setting only for iPad
+        alertController.popoverPresentationController?.sourceView = rootVC.view
+        alertController.popoverPresentationController?.sourceRect = CGRect(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height - 100, width: 0, height: 0)
+
+        
         alertWindow?.rootViewController = rootVC
         alertWindow?.makeKeyAndVisible()
         rootVC.present(alertController, animated: true)

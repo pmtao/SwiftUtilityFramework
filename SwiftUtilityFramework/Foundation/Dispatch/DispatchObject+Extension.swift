@@ -3,7 +3,7 @@
 //  SwiftUtilityFramework
 //
 //  Created by 阿涛 on 18-6-28.
-//  Copyright © 2018年 SinkingSoul. All rights reserved.
+//  Copyright © 2019年 SinkingSoul. All rights reserved.
 //
 
 import Foundation
@@ -15,7 +15,7 @@ extension DispatchObject {
     /// - Parameters:
     ///   - time: 几秒后执行
     ///   - block: 待执行的闭包
-    static func dispatch_later(_ time: TimeInterval, block: @escaping ()->()) {
+    public static func dispatch_later(_ time: TimeInterval, block: @escaping ()->()) {
         let t = DispatchTime.now() + time
         DispatchQueue.main.asyncAfter(deadline: t, execute: block)
     }
@@ -27,7 +27,7 @@ extension DispatchObject {
     /// - Parameters:
     ///   - newDelayTime: 新任务执行时的延迟时间
     ///   - anotherTask: 待替换的新任务
-    typealias ExchangableTask = (
+    public typealias ExchangableTask = (
         _ newDelayTime: TimeInterval?, _ anotherTask:@escaping (() -> ())
         ) -> Void
     
@@ -37,7 +37,7 @@ extension DispatchObject {
     ///   - time: 延迟时间
     ///   - yourTask: 要执行的任务
     /// - Returns: 可替换原任务的闭包
-    static func delay(_ time: TimeInterval, yourTask: @escaping ()->()) -> ExchangableTask {
+    public static func delay(_ time: TimeInterval, yourTask: @escaping ()->()) -> ExchangableTask {
         var exchangingTask: (() -> ())? // 备用替代任务
         var newDelayTime: TimeInterval? // 新的延迟时间
         
@@ -47,11 +47,11 @@ extension DispatchObject {
             } else {
                 if newDelayTime == nil {
                     DispatchQueue.main.async {
-                        print("任务已更改，现在是：\(Date.getTimeStamp(.milliseconds)) 毫秒")
+                        print("任务已更改，现在是：\(Date().timeIntervalSince1970 * 1000) 毫秒")
                         exchangingTask!()
                     }
                 }
-                print("原任务取消了，现在是：\(Date.getTimeStamp(.milliseconds)) 毫秒")
+                print("原任务取消了，现在是：\(Date().timeIntervalSince1970 * 1000) 毫秒")
             }
         }
         
@@ -65,7 +65,7 @@ extension DispatchObject {
             if delayTime != nil {
                 self.dispatch_later(delayTime!) {
                     anotherTask()
-                    print("任务已更改，现在是：\(Date.getTimeStamp(.milliseconds)) 毫秒")
+                    print("任务已更改，现在是：\(Date().timeIntervalSince1970 * 1000) 毫秒")
                 }
             }
         }

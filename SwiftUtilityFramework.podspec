@@ -49,6 +49,7 @@ Pod::Spec.new do |s|
   # Network 子模块
   s.subspec 'Network' do |network|
     network.source_files = 'SwiftUtilityFramework/Network/**/*.{h,m,swift}'
+    network.dependency 'SwiftUtilityFramework/Foundation'
   end
   
   # ImageProcess 子模块
@@ -59,6 +60,7 @@ Pod::Spec.new do |s|
     # Algorithm 子模块
   s.subspec 'Algorithm' do |algorithm|
     algorithm.source_files = 'SwiftUtilityFramework/Algorithm/**/*.{h,m,swift}'
+    algorithm.dependency 'SwiftUtilityFramework/Foundation'
   end
   
 end

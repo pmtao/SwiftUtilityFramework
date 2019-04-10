@@ -11,6 +11,22 @@ import NaturalLanguage
 
 public class TextTagger {
     
+    /// 给文本进行简单分词
+    public static func simpleTextTag(_ text: String) -> [String] {
+        var tags: [String] = []
+        let range = NSRange(location: 0, length: text.count)
+        let options: NSLinguisticTagger.Options = [.omitPunctuation, .omitWhitespace]
+        let tagger = NSLinguisticTagger(tagSchemes: [.tokenType], options: 0)
+        tagger.string = text
+        tagger.enumerateTags(in: range,
+                             scheme: .tokenType,
+                             options: options)
+        { (tag, range, _, _) in
+            tags.append((text as NSString).substring(with: range))
+        }
+        return tags
+    }
+    
     public static func decideTextLanguage(_ text: String) -> String {
         if #available(iOS 12.0, *) {
             let recog = NLLanguageRecognizer()
